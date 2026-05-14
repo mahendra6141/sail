@@ -75,7 +75,19 @@
   style="background:#2e7d32; color:#fff; border:none; padding:6px 12px; border-radius:6px;">
   ➕ Save
 </button>
+<!-- 🔥 YE NAYA ADD HOGA -->
+<select id="filterPlant"
+  onchange="loadProjectList()">
 
+  <option value="">📂 Filter Plant</option>
+  <option value="BSP">BSP</option>
+  <option value="RSP">RSP</option>
+  <option value="ISP">ISP</option>
+  <option value="BSL">BSL</option>
+  <option value="DSP">DSP</option>
+  <option value="OTHERS">OTHERS</option>
+
+</select>
 <select id="projectList" onchange="loadProject()"
   style="padding:6px; border-radius:6px;">
   <option value="">📂 Load Project</option>
