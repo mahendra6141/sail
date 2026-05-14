@@ -965,9 +965,36 @@ function calcTailBearing(){
   document.getElementById("Lh_tb").value = Lh.toFixed(0);
 }
 // table gear box service factor 
+
+window.calculate = calculate;
+window.calcIdler = calcIdler;
+window.calcMainRes = calcMainRes;
+window.calcSecondary = calcSecondary;
+window.calcSpecial = calcSpecial;
+window.calcPower = calcPower;
+window.calcBeltForces = calcBeltForces;
+window.calcGear = calcGear;
+window.calcShaft = calcShaft;
+window.calcDeflection = calcDeflection;
+window.calcBearing = calcBearing;
+window.calcSnubShaft = calcSnubShaft;
+window.calcSnubDeflection = calcSnubDeflection;
+window.calcSnubBearing = calcSnubBearing;
+window.calcTakeUp = calcTakeUp;
+window.calcBend = calcBend;
+window.calcTailShaft = calcTailShaft;
+window.calcTailDeflection = calcTailDeflection;
+window.calcTailBearing = calcTailBearing;
+
 window.openTab = openTab;
 window.openSubTab = openSubTab;
+window.setValue = setValue;
+window.printFullReport = printFullReport;
+
 window.saveProject = saveProject;
 window.loadProject = loadProject;
-window.printFullReport = printFullReport;
-window.setValue = setValue;
+window.loadProjectList = loadProjectList;
+
+
+
+
