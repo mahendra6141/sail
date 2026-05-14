@@ -107,7 +107,7 @@ function printFullReport() {
     document.getElementById("defaultOpen").click();
   }, 500);
 }
-// ================== PROJECT SAVE SYSTEM ==================
+
 
 // 🔹 Save Project
 async function saveProject() {
@@ -115,7 +115,7 @@ async function saveProject() {
   let id = document.getElementById("projectId").value.trim();
 
   let plant = document.getElementById("plant").value;
-  let area = document.getElementById("area").value;
+  let area  = document.getElementById("area").value;
 
   if(!id){
     alert("Enter Project ID!");
@@ -124,10 +124,13 @@ async function saveProject() {
 
   let data = {};
 
-  document.querySelectorAll("input").forEach(el=>{
+  // 🔥 sab input save karo
+  document.querySelectorAll("input").forEach(el => {
+
     if(el.id){
       data[el.id] = el.value;
     }
+
   });
 
   const { error } = await supabase
@@ -142,17 +145,21 @@ async function saveProject() {
     ]);
 
   if(error){
+
     console.log(error);
     alert("Save Failed");
+
   } else {
+
     alert("Project Saved!");
     loadProjectList();
+
   }
 }
 
 
 
-// 🔹 Load Project Data
+// 🔹 Load Project List
 async function loadProjectList(){
 
   const { data, error } = await supabase
@@ -166,7 +173,11 @@ async function loadProjectList(){
 
   let list = document.getElementById("projectList");
 
-  list.innerHTML = '<option value="">📂 Load Project</option>';
+  list.innerHTML = `
+    <option value="">
+      📂 Load Project
+    </option>
+  `;
 
   data.forEach(project => {
 
@@ -175,18 +186,55 @@ async function loadProjectList(){
         ${project.plant} | ${project.area} | ${project.project_name}
       </option>
     `;
+
   });
+
 }
 
+
+
+// 🔹 Load Project Data
+async function loadProject(){
+
+  let id = document.getElementById("projectList").value;
+
+  if(!id) return;
+
+  const { data, error } = await supabase
+    .from("calculations")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if(error){
+    console.log(error);
+    return;
+  }
+
+  let input = data.input_data;
+
+  // 🔥 sab inputs refill
+  for(let key in input){
+
+    let el = document.getElementById(key);
+
+    if(el){
+      el.value = input[key];
+    }
+
+  }
+
+  // 🔥 project info refill
   document.getElementById("projectId").value =
-  data.project_name;
+    data.project_name || "";
 
-document.getElementById("plant").value =
-  data.plant;
+  document.getElementById("plant").value =
+    data.plant || "";
 
-document.getElementById("area").value =
-  data.area;
-  
+  document.getElementById("area").value =
+    data.area || "";
+
+}
 
 
 // 🔹 Page Load pe list auto fill
