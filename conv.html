@@ -1,0 +1,2825 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Conveyor Calculator</title>
+  <link rel="stylesheet" href="conv.css">
+</head>
+
+<body>
+
+<h2 style="
+  font-size: 34px;
+  font-weight: 800;
+  padding: 22px;
+  text-align: center;
+  background: linear-gradient(90deg, #1a237e, #4a148c, #0d47a1);
+  color:#e1bee7;
+  border-radius: 12px;
+  letter-spacing: 1px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+">
+  Conveyor Design Calculator
+
+  <!-- PRINT button OK hai yaha -->
+  <button onclick="printFullReport()" 
+    style="
+      position:absolute;
+      right:15px;
+      top:80%;
+      transform:translateY(-50%);
+      padding:6px 14px;
+      background: linear-gradient(45deg, #ff9800, #ff5722);
+      color:#fff;
+      border:none;
+      border-radius:8px;
+      font-weight:bold;
+      cursor:pointer;
+    ">
+    📄 PRINT
+  </button>
+</h2>
+
+<!-- 🔥 PROJECT BAR (IMPORTANT: h2 ke bahar) -->
+<div style="
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin:15px 0;
+  justify-content:center;
+  flex-wrap:wrap;
+">
+
+  <input id="projectId" placeholder="Enter Project ID"
+    style="padding:6px; border-radius:6px; border:1px solid #ccc;">
+
+  <button onclick="saveProject()" 
+    style="background:#2e7d32; color:#fff; border:none; padding:6px 12px; border-radius:6px;">
+    ➕ Save
+  </button>
+
+  <select id="projectList" onchange="loadProject()"
+    style="padding:6px; border-radius:6px;">
+    <option value="">📂 Load Project</option>
+  </select>
+
+</div>
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event,'Input')" id="defaultOpen">Input Data</button>
+  <button class="tablinks" onclick="openTab(event,'IdlerBelt')">Idler & Belt Weight</button>
+  <button class="tablinks" onclick="openTab(event,'MainRes')">Main Resistance</button>
+  <button class="tablinks" onclick="openTab(event,'SecondaryRes')">Secondary Resistance</button>
+  <button class="tablinks" onclick="openTab(event,'SpecialRes')">Special Resistance</button>
+  <button class="tablinks" onclick="openTab(event,'PowerCalc')">Power Calculation</button>
+  <button class="tablinks" onclick="openTab(event,'BeltForces')">Belt Forces</button>
+  <button class="tablinks" onclick="openTab(event,'Gearbox')">Gearbox & Coupling</button>
+  <button class="tablinks" onclick="openTab(event,'DrivePulley')">Drive Pulley</button>
+  <button class="tablinks" onclick="openTab(event,'TailPulley')">Tail Pulley</button>
+  <button class="tablinks" onclick="openTab(event,'SnubPulley')">Snub Pulley</button>
+  <button class="tablinks" onclick="openTab(event,'TakeUpPulley')">Take-Up Pulley</button>
+  <button class="tablinks" onclick="openTab(event,'BendPulley')">Bend Pulley</button>
+  
+</div>
+
+<!-- =============================================
+     ================ INPUT DATA =================
+     =============================================-->
+<div id="Input" class="tabcontent">
+
+
+<h3>Basic Input Data</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+  <td>Capacity rated (Qr)</td>
+  <td>TPH</td>
+  <td><input id="Qr" value="1000"></td>
+</tr>
+
+<tr>
+  <td>Designed Factor</td>
+  <td>-</td>
+  <td><input id="n" value="1.25"></td>
+</tr>
+
+<tr>
+  <td>Conveyor Horizontal Length (L)</td>
+  <td>m</td>
+  <td><input id="L" value="314.6"></td>
+</tr>
+
+<tr>
+  <td>Total Lift (H)</td>
+  <td>m</td>
+  <td><input id="H" value="12.35"></td>
+</tr>
+
+<tr>
+  <td>Conveyor Slope (δ)</td>
+  <td>Degrees</td>
+  <td><input id="cs" value="10"></td>
+</tr>
+
+<tr>
+  <td>Bulk density (ρ)</td>
+  <td>t/m³</td>
+  <td><input id="rho" value="1.6"></td>
+</tr>
+
+<tr>
+  <td>Belt speed (V)</td>
+  <td>m/s</td>
+  <td><input id="V" value="2"></td>
+</tr>
+
+<tr>
+  <td>Belt width (B)</td>
+  <td>mm</td>
+  <td><input id="B" value="1200"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Slope Factor (K)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Hover Box -->
+  <div class="info-box">
+
+    <!-- ✅ TABLE DIV -->
+    <div>
+      <table class="info-table">
+        <tr>
+          <th colspan="4">IS 11592-2000 (Table 9)</th>
+        </tr>
+        <tr>
+          <th>Slope Angle (°)</th>
+          <th>K</th>
+		  <th>Slope Angle (°)</th>
+          <th>K</th>
+        </tr>
+
+        <tr>
+		<td>0</td><td onclick="setValue('K','1.00')">1.00</td>
+        <td>2</td><td onclick="setValue('K','1.00')">1.00</td>
+		</tr>
+		
+        <tr>
+		<td>4</td><td onclick="setValue('K','0.99')">0.99</td>
+        <td>6</td><td onclick="setValue('K','0.98')">0.98</td>
+		</tr>
+		
+        <tr>
+		<td>8</td><td onclick="setValue('K','0.97')">0.97</td>
+        <td>10</td><td onclick="setValue('K','0.95')">0.95</td>
+		</tr>
+        <tr>
+		<td>12</td><td onclick="setValue('K','0.93')">0.93</td>
+        <td>14</td><td onclick="setValue('K','0.91')">0.91</td>
+		</tr>
+		
+        <tr>
+		<td>16</td><td onclick="setValue('K','0.89')">0.89</td>
+        <td>18</td><td onclick="setValue('K','0.85')">0.85</td>
+	   </tr>
+	   
+        <tr>
+		<td>20</td><td onclick="setValue('K','0.81')">0.81</td>
+        <td>22</td><td onclick="setValue('K','0.78')">0.78</td>
+		</tr>
+		
+        <tr>
+		<td>23</td><td onclick="setValue('K','0.73')">0.73</td>
+        <td>24</td><td onclick="setValue('K','0.71')">0.71</td>
+		</tr>
+		
+        <tr>
+		<td>25</td><td onclick="setValue('K','0.68')">0.68</td>
+        <td>26</td><td onclick="setValue('K','0.66')">0.66</td>
+		</tr>
+		
+        <tr>
+		<td>27</td><td onclick="setValue('K','0.64')">0.64</td>
+        <td>28</td><td onclick="setValue('K','0.61')">0.61</td>
+		</tr>
+		
+        <tr>
+		<td>29</td><td onclick="setValue('K','0.59')">0.59</td>
+        <td>30</td><td onclick="setValue('K','0.56')">0.56</td>
+		</tr>
+
+      </table>
+    </div>
+
+    <!-- ✅ GRAPH / IMAGE DIV -->
+    <div style="margin-top:10px; text-align:center;">
+      <img src="conv_factor.jpg" class="info-img">
+    </div>
+
+  </div>
+</td>
+
+<td>-</td>
+<td><input id="K" value="0.95"></td>
+</tr>
+<tr>
+  <td>Section area (A)</td>
+  <td>m²</td>
+  <td><input id="A" value="0.163"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Lump Size Factor (K1)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Hover Table -->
+  <div class="info-box">
+    <table class="info-table">
+	   <tr><th colspan="3"><h1>IS 11592-2000 (Table 4 pg: 7)</h1></th></tr>
+      <tr>
+	  <th>Type</th>
+	  <th>Condition</th>
+	  <th>K1</th>
+	  </tr>
+	  
+      <tr>
+	  <td>Fine Grain</td>
+	  <td>&lt;10 mm</td>
+	 <td onclick="setValue('K1','0')">0</td>
+	  </tr>
+	  
+      <tr>
+	  <td>Granular</td>
+	  <td>&lt;25 mm</td>
+	  <td onclick="setValue('K1','1')">1</td>
+	  </tr>
+	  
+      <tr>
+	  <td>Sized & Unsized</td>
+	  <td>&lt;20% permissible</td>
+	  <td onclick="setValue('K1','2')">2</td>
+	  </tr>
+	  
+      <tr>
+	  <td>Sized</td>
+	  <td>&lt;60% permissible</td>
+	  <td onclick="setValue('K1','3')">3</td>
+	  </tr>
+	  
+      <tr>
+	  <td>Unsized</td>
+	  <td>Exceeds permissible</td>
+	 <td onclick="setValue('K1','4')">4</td>
+	  </tr>
+	  
+    </table>
+  </div>
+</td>
+
+<td>-</td>
+<td><input id="K1" value="2"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Abrasiveness Factor (K2)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Hover Table -->
+  <div class="info-box">
+    <table class="info-table">
+	<tr><th colspan="3"><h1>IS 11592-2000 (Table 5 pg: 7)</h1></th></tr>
+      <tr>
+        <th>Abrasiveness</th>
+        <th>Type of Material</th>
+        <th>K2</th>
+      </tr>
+
+      <tr>
+        <td>Non Abrasive</td>
+        <td>Free flowing materials like grains, wood chips, pulp, dust, sand</td>
+        <td onclick="setValue('K2','1')">1</td>
+      </tr>
+
+      <tr>
+        <td>Mildly Abrasive</td>
+        <td>Aggregate, sand, gravel, coal, salt, slate</td>
+        <td onclick="setValue('K2','2')">2</td>
+      </tr>
+
+      <tr>
+        <td>Abrasive</td>
+        <td>Slag, spar, limestone concentrates, pellets</td>
+        <td onclick="setValue('K2','3')">3</td>
+      </tr>
+
+      <tr>
+        <td>Very Abrasive</td>
+        <td>Iron ores, granite, flint rock, coke, sinter</td>
+         <td onclick="setValue('K2','4')">4</td>
+      </tr>
+
+    </table>
+  </div>
+</td>
+
+<td>-</td>
+<td><input id="K2" value="4"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calculate()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Formula</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+  <td>Speed factor (Kv)</td>
+  <td>Kv = K1 + K2</td>
+  <td>-</td>
+  <td><input class="result" id="Kv" readonly></td>
+</tr>
+<tr>
+  <td>Capacity designed (Qd)</td>
+  <td>Qd = n x Qr</td>
+  <td>TPH</td>
+  <td><input  class="result" id="Qd" readonly></td>
+</tr>
+<tr>
+  <td>Max Capacity (Qmax)</td>
+  <td>Qmax = A × 3600 × V × ρ × K</td>
+  <td>t/h</td>
+  <td><input  class="result"  id="Qmax" readonly></td>
+</tr>
+
+<tr>
+  <td>Min Speed (Vmin)</td>
+  <td>Vmin = Qr / (A × 3600 × ρ × K)</td>
+  <td>m/s</td>
+  <td><input class="result"  id="Vmin" readonly></td>
+</tr>
+
+<tr>
+  <td>Material mass (mG)</td>
+  <td>mG = Qr / (3.6 × V)</td>
+  <td>kg/m</td>
+  <td><input class="result"  id="mG" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- =============================================
+     ================ Idler And Belt =============
+     =============================================-->
+
+<div id="IdlerBelt" class="tabcontent">
+
+<h3>Idler & Belt Weight Calculation</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+  <td>No of idlers (Carrying)</td>
+  <td>-</td>
+  <td><input id="n_c" value="822"></td>
+</tr>
+
+<tr>
+  <td>No of idlers (Impact)</td>
+  <td>-</td>
+  <td><input id="n_i" value="252"></td>
+</tr>
+
+<tr>
+  <td>No of idlers (Return)</td>
+  <td>-</td>
+  <td><input id="n_r" value="101"></td>
+</tr>
+
+<tr>
+  <td>Weight of idler (Carrying)</td>
+  <td>kg</td>
+  <td><input id="m_c" value="17.7"></td>
+</tr>
+
+<tr>
+  <td>Weight of idler (Impact)</td>
+  <td>kg</td>
+  <td><input id="m_i" value="18.7"></td>
+</tr>
+
+<tr>
+  <td>Weight of idler (Return)</td>
+  <td>kg</td>
+  <td><input id="m_r" value="35.3"></td>
+</tr>
+
+<tr>
+  <td>Carcass thickness (δ1)</td>
+  <td>mm</td>
+  <td><input id="d1" value="8.6"></td>
+</tr>
+
+<tr>
+  <td>Top cover thickness (δ2)</td>
+  <td>mm</td>
+  <td><input id="d2" value="6"></td>
+</tr>
+
+<tr>
+  <td>Bottom cover thickness (δ3)</td>
+  <td>mm</td>
+  <td><input id="d3" value="3"></td>
+</tr>
+
+<tr>
+  <td>Belt width (B)</td>
+  <td>mm</td>
+  <td><input id="B2" readonly></td>
+</tr>
+
+<tr>
+  <td>Conveyor Length (L)</td>
+  <td>m</td>
+  <td><input id="L2" readonly></td>
+</tr>
+
+<tr>
+  <td>Capacity (Qd)</td>
+  <td>TPH</td>
+  <td><input id="Qr2" readonly></td>
+</tr>
+
+<tr>
+  <td>Belt Speed (V)</td>
+  <td>m/s</td>
+  <td><input id="V2" readonly></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcIdler()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Formula</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+  <td>Mass of belt (mB)</td>
+  <td>mB = 1.1 × (δ1 + δ2 + δ3) × B</td>
+  <td>kg/m</td>
+  <td><input class="result"  id="mB" readonly></td>
+</tr>
+
+<tr>
+  <td>Carrying idler mass (mC)</td>
+  <td>mC = m × n / L</td>
+  <td>kg/m</td>
+  <td><input class="result"  id="mC" readonly></td>
+</tr>
+
+<tr>
+  <td>Return idler mass (mr)</td>
+  <td>mr = m × n / L</td>
+  <td>kg/m</td>
+  <td><input class="result"  id="mr" readonly></td>
+</tr>
+
+<tr>
+  <td>Material mass (mG)</td>
+  <td>mG = Qr / (3.6 × V)</td>
+  <td>kg/m</td>
+  <td><input class="result"  id="mG2" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- =============================================
+     ================ Main Resistance =============
+     =============================================-->
+<div id="MainRes" class="tabcontent">
+
+<h3>Main Resistance Calculation</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+  <td>Mass of carrying idlers (mC)</td>
+  <td>kg/m</td>
+  <td><input id="mc" readonly></td>
+</tr>
+
+<tr>
+  <td>Mass of return idlers (mr)</td>
+  <td>kg/m</td>
+  <td><input id="mr2" readonly></td>
+</tr>
+
+<tr>
+  <td>Material mass (mG)</td>
+  <td>kg/m</td>
+  <td><input id="mG3" readonly></td>
+</tr>
+
+<tr>
+  <td>Belt mass (mB)</td>
+  <td>kg/m</td>
+  <td><input id="mB2" readonly></td>
+</tr>
+
+<tr>
+  <td>Conveyor slope (δ)</td>
+  <td>Degrees</td>
+  <td><input id="delta" readonly></td>
+</tr>
+
+<tr>
+  <td>Conveyor length (L)</td>
+  <td>m</td>
+  <td><input id="L3" readonly></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+   Сoefficient of friction    (f)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Detailed Info -->
+  <div class="info-box">
+
+    <h1>IS 11592-2000 (pg: 17)</h1><br>
+    Artificial friction coefficient (idler + belt resistance)<br><br>
+
+    <b>Standard Values:</b><br>
+    • 0.020 → Normal conveyor<br>
+    • 0.012 → Downhill conveyor (with brake)<br><br>
+
+    <b>Typical Range:</b><br>
+    • 0.016 → Best conditions<br>
+    • 0.020 → Standard (most cases)<br>
+    • 0.025–0.030 → Poor conditions<br><br>
+
+    <b>f increases when:</b><br>
+    • High friction material<br>
+    • Trough angle &gt; 30°<br>
+    • Belt speed &gt; 5 m/s<br>
+    • Poor alignment / dusty / wet<br>
+    • Low temperature (&lt;20°C)<br>
+    • Large idler spacing<br><br>
+
+    <b>f decreases when:</b><br>
+    • Proper alignment<br>
+    • Smooth idlers<br>
+    • Clean & dry conditions<br><br>
+
+    <b>Notes:</b><br>
+    • Standard value (0.020) valid for normal conditions<br>
+    • f may go &gt;0.030 in extreme cases (mines)<br>
+
+  </div>
+</td>
+
+<td>-</td>
+<td><input id="f" value="0.03"></td>
+</tr>
+
+<tr>
+  <td>Gravity (g)</td>
+  <td>m/s²</td>
+  <td><input id="g" value="9.81"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcMainRes()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Formula</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+  <td>Main Resistance (Loaded)</td>
+  <td>R = f × L × g × (mC + mr + (2mB + mG) × cosδ)</td>
+  <td>N</td>
+  <td><input class="result"  id="R_loaded" readonly></td>
+</tr>
+
+<tr>
+  <td>Main Resistance (Empty Belt)</td>
+  <td>R = f × L × g × (mC + mr + 2mB × cosδ)</td>
+  <td>N</td>
+  <td><input class="result"  id="R_empty" readonly></td>
+</tr>
+
+</table>
+
+</div> 
+<!-- =============================================
+     ================ Secondary Resistance =======
+     =============================================-->
+<div id="SecondaryRes" class="tabcontent">
+
+<h3>Secondary Resistance Calculation</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr><td>Bulk density (ρ)</td>
+<td>t/m³</td>
+<td><input id="rho_s" readonly></td>
+</tr>
+
+<tr>
+<td>Capacity designed (Qd)</td>
+<td>TPH</td>
+<td><input id="Qd_s" readonly></td>
+</tr>
+
+<tr>
+<td>Belt speed (V)</td>
+<td>m/s</td>
+<td><input id="V_s" readonly></td>
+</tr>
+
+<tr>
+<td>Belt width (B)</td>
+<td>mm</td><td>
+<input id="B_s" readonly></td>
+</tr>
+
+<tr>
+<td>Gravity (g)</td>
+<td>m/s²</td>
+<td><input id="g_s" readonly></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  μ1 (material-belt friction)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Info Text -->
+  <div class="info-box">
+    <p><h1>IS 11592-2000 (pg: 17)</h1></p>
+    μ1 = Coefficient of friction between material and belt <br>
+    Range: <b>0.5 to 0.7</b>
+  </div>
+</td>
+
+<td>-</td>
+<td><input id="mu1" value="0.7"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  μ2 (material-skirt friction)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Info Text -->
+  <div class="info-box">
+    <p><h1>IS 11592-2000 (pg: 17)</h1></p>
+    μ2 = Coefficient of friction between material and skirt plate <br>
+    Range: <b>0.5 to 0.7</b>
+  </div>
+ 
+</td>
+<td>-</td>
+<td><input id="mu2" value="0.7"></td>
+</tr>
+
+<tr>
+<td>Initial velocity (V0)</td>
+<td>m/s</td>
+<td><input id="V0" value="0"></td>
+</tr>
+
+<tr>
+<td>No. pulleys (n1)</td>
+<td>-</td>
+<td><input id="n1" value="1"></td>
+</tr>
+
+<tr>
+<td>No. pulleys (n2)</td>
+<td>-</td>
+<td><input id="n2" value="1"></td>
+</tr>
+
+<tr>
+<td>No. pulleys (n3)</td>
+<td>-</td>
+<td><input id="n3" value="4"></td>
+</tr>
+
+<tr>
+<td>Total pulleys (n)</td>
+<td>-</td>
+<td><input id="n_total" value="6"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcSecondary()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Formula</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Volumetric Capacity (Q)</td>
+<td>Q = Qd / (3600 × ρ)</td>
+<td>m³/s</td>
+<td><input class="result"  id="Q_vol" readonly></td>
+</tr>
+
+<tr>
+<td>Acceleration Length (La)</td>
+<td>La = (V² - V0²) / (2gμ1)</td>
+<td>m</td>
+<td><input class="result"  id="La" readonly></td>
+</tr>
+
+<tr>
+<td>Skirt width (b1)</td>
+<td>b1 = 2/3 × B</td>
+<td>m</td>
+<td><input class="result"  id="b1" readonly></td>
+</tr>
+
+<tr>
+<td>Acceleration resistance (Ra)</td>
+<td>Ra = Q ×1000×ρ×(V-V0)</td>
+<td>N</td>
+<td><input class="result"  id="Ra" readonly></td>
+</tr>
+
+<tr>
+<td>Skirt resistance (Rska)</td>
+<td>Rska=μ<sub>2</sub> x Q<sup>2</sup> x 1000 x ρx g x La/( ((V+Vo) / 2)<sup>2</sup> x b1<sup>2</sup> )</td>
+<td>N</td>
+<td><input class="result"  id="Rska" readonly></td>
+</tr>
+
+<tr>
+<td>Wrap resistance (Rw)</td>
+<td>Rw = 230n1 + 175n2 + 140n3</td>
+<td>N</td>
+<td><input class="result"  id="Rw" readonly></td>
+</tr>
+
+<tr>
+<td>Pulley  Bearing resistance (RB)</td>
+<td>RB = n × 100</td>
+<td>N</td>
+<td><input class="result"  id="RB" readonly></td>
+</tr>
+
+<tr>
+<td>Total Secondary Resistance</td>
+<td>Rs = Ra + Rska + Rw + RB</td>
+<td>N</td>
+<td><input class="result"  id="Rs" readonly></td>
+</tr>
+
+<tr>
+<td>Empty Belt Resistance</td>
+<td>Rs = Rs - (50 × n)</td>
+<td>N</td>
+<td><input class="result"  id="Rs_empty" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- =============================================
+     ======== Secondary Special Resistance =======
+     =============================================-->	
+<div id="SpecialRes" class="tabcontent">
+
+<h3>Special & Secondary Resistances</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Gravity (g)</td>
+<td>m/s²</td>
+<td><input id="g_sp" readonly></td>
+</tr>
+
+<tr>
+<td>Volumetric Capacity (Q)</td>
+
+<td>m³/s</td>
+<td><input id="Q_vol1" readonly></td>
+</tr>
+
+<tr>
+  <td>Bulk density (ρ)</td>
+  <td>t/m³</td>
+  <td><input id="rho2" readonly></td>
+</tr>
+
+<tr>
+  <td>Belt speed (V)</td>
+  <td>m/s</td>
+  <td><input id="Vs" readonly></td>
+</tr>
+
+<tr>
+<td>Skirt width (b1)</td>
+<td>m</td>
+<td><input id="bs" readonly></td>
+</tr>
+<tr>
+<td>Belt mass (mB)</td>
+<td>kg/m</td>
+<td><input id="mB_sp" readonly></td>
+</tr>
+
+<tr>
+<td>Material mass (mG)</td>
+<td>kg/m</td>
+<td><input id="mG_sp" readonly></td>
+</tr>
+
+<tr>
+<td>Slope (δ)</td>
+<td>deg</td>
+<td><input id="delta_sp" readonly></td>
+</tr>
+
+<tr>
+<td>μ2 (material-skirt friction)</td>
+<td>-</td>
+<td><input id="mu2_sp" readonly></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Coefficient depending upon trough angle (C1)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Info Text -->
+  <div class="info-box">
+     <p><h1>IS 11592-2000 (pg: 17)</h1></p>
+    C1 = Trough factor based on angle <br><br>
+        = 0.4  Trough factor up to 30° trough <br>
+    = 0.5  Trough factor above 30° up to 45° trough
+  </div>
+</td>
+
+<td>-</td>
+<td><input id="C1" value="0.5"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Coefficient of friction between carrying idlers and belt (μo)               
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Info Text -->
+  <div class="info-box">
+     <p><h1>IS 11592-2000 (pg: 17)</h1></p>
+   µ0 = coefficient of friction between carrying 
+         idlers and belts <br>
+       = 0.3 to 0.4 
+   
+  </div>
+</td>
+
+<td>-</td>
+<td><input id="muo" value="0.4"></td>
+</tr>
+
+<tr>
+<td>Idler tilt angle (i)</td>
+<td>deg</td>
+<td><input id="i" value="2"></td>
+</tr>
+
+<tr>
+<td>Tilted idler length (L1)</td>
+<td>m</td>
+<td><input id="L1" value="310"></td>
+</tr>
+
+<tr>
+<td>Belt width (B)</td>
+<td>mm</td>
+<td><input id="B_sp" readonly></td>
+</tr>
+
+<tr>
+<td>Total lift (H)</td>
+<td>m</td>
+<td><input id="H1" readonly></td>
+</tr>
+
+<tr>
+<td>Skirt length (Lsk)</td>
+<td>m</td>
+<td><input id="Lsk" value="82.1"></td>
+</tr>
+
+<tr>
+<td>Cleaner count (n)</td>
+<td>-</td>
+<td><input id="n_cl" value="3"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Coefficient of friction between belt and  belt cleaner (μ3)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Info Text -->
+  <div class="info-box">
+    <p><h1>IS 11592-2000 (pg: 17)</h1></p>
+    μ3 = Coefficient of friction between belt and  belt cleaner  <br>
+    Range: <b>0.6 to 0.7</b>
+  </div>
+ 
+</td>
+<td>-</td>
+<td><input id="mu3" value="0.7"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+   Pressure between belt cleaner and belt (P)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Info Text -->
+  <div class="info-box">
+    <p><h1>IS 11592-2000 (pg: 17)</h1></p>
+    P = Pressure between belt cleaner and belt  <br>
+    Range: <b> 3 x (10)<sup>4</sup> to 10<sup>5</sup> N/m2 </b>
+  </div>
+ 
+</td>
+<td>N/m²</td>
+<td><input id="P" value="65000"></td>
+</tr>
+
+
+<tr>
+<td>Discharge plough resistance (Rp)</td>
+<td>N</td>
+<td><input id="Rp" value="0"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcSpecial()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Rt (loaded)</td>
+<td>N</td>
+<td><input class="result" id="Rt" readonly></td>
+</tr>
+
+<tr>
+<td>Rt (empty)</td>
+<td>N</td>
+<td><input class="result"  id="Rt_empty" readonly></td>
+</tr>
+
+<tr>
+<td>Rsk</td>
+<td>N</td>
+<td><input class="result"  id="Rsk" readonly></td>
+</tr>
+
+<tr>
+<td>A1</td>
+<td>m²</td>
+<td><input class="result"  id="A1" readonly></td>
+</tr>
+
+<tr>
+<td>RBC</td>
+<td>N</td>
+<td><input class="result"  id="RBC" readonly></td>
+</tr>
+
+<tr>
+<td>Rsp (total)</td>
+<td>N</td>
+<td><input class="result"  id="Rsp" readonly></td>
+</tr>
+
+<tr>
+<td>Rsp (empty)</td>
+<td>N</td>
+<td><input class="result"  id="Rsp_empty" readonly></td>
+</tr>
+
+<tr>
+<td>RS1 (lifting)</td>
+<td>N</td>
+<td><input class="result"  id="RS1" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- =============================================
+     ================ Power Calculation===========
+     =============================================-->
+<div id="PowerCalc" class="tabcontent">
+
+<h3>Power Calculation</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Main Resistance (R)</td>
+<td>N</td>
+<td><input id="R_p"readonly></td>
+</tr>
+
+<tr>
+<td>Main Resistance empty</td>
+<td>N</td>
+<td><input id="R_empty_p" readonly></td>
+</tr>
+
+<tr>
+<td>Secondary Resistance (Rs)</td>
+<td>N</td>
+<td><input id="Rs_p" readonly></td>
+</tr>
+
+<tr>
+<td>Secondary Resistance empty</td>
+<td>N</td>
+<td><input id="Rs_empty_p" readonly></td>
+</tr>
+
+<tr>
+<td>Special Resistance (Rsp)</td>
+<td>N</td>
+<td><input id="Rsp_p" readonly></td>
+</tr>
+
+<tr>
+<td>Special Resistance empty</td>
+<td>N</td>
+<td><input id="Rsp_empty_p" readonly></td>
+</tr>
+
+<tr>
+<td>Lifting Resistance (Rs1)</td>
+<td>N</td><td><input id="Rs1" readonly></td>
+</tr>
+
+<tr>
+<td>Belt Speed (V)</td>
+<td>m/s</td><td><input id="V_p" readonly></td>
+</tr>
+
+<tr>
+<td>Drive pulley wrap resistance (Rwd)</td>
+<td>N</td>
+<td><input id="Rwd" value="230"></td>
+</tr>
+
+<tr>
+<td>Drive pulley bearing resistance (Rbd)</td>
+<td>N</td>
+<td><input id="Rbd" value="100"></td>
+</tr>
+
+<tr>
+<td>Transmission efficiency (η1)</td>
+<td>-</td>
+<td><input id="eta1" value="0.95"></td>
+</tr>
+<tr>
+<td>Temperature factor (nt)</td>
+<td>-</td>
+<td><input id="nt" value="0.94"></td>
+</tr>
+
+<tr>
+<td>Motor reserve factor</td>
+<td>-</td>
+<td><input id="sf" value="1.1"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcPower()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Formula</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Peripheral Force (Loaded)</td>
+<td>Te = R + Rs + Rsp + Rs1</td>
+<td>N</td>
+<td><input class="result"  id="Te" readonly></td>
+</tr>
+
+<tr>
+<td>Peripheral Force (Empty)</td>
+<td>Te = R + Rs + Rsp</td>
+<td>N</td>
+<td><input class="result"  id="Te_empty" readonly></td>
+</tr>
+
+<tr>
+<td>Power at Drive Pulley</td>
+<td>P = Te × V / 1000</td>
+<td>kW</td>
+<td><input class="result"  id="Pdp" readonly></td>
+</tr>
+
+<tr>
+<td>Power after losses</td>
+<td>Pa = P + (Rwd+Rbd)×V/1000</td>
+<td>kW</td>
+<td><input class="result"  id="Pa" readonly></td>
+</tr>
+
+<tr>
+<td>Motor Power</td>
+<td>Pm = sf × Pa / η1 / nt</td>
+<td>kW</td>
+<td><input class="result"  id="Pm" readonly></td>
+</tr>
+
+</table>
+
+</div> 
+
+
+<!-- =============================================
+     ================ Belt Force =================
+     =============================================-->
+<div id="BeltForces" class="tabcontent">
+
+<h3>Belt Forces Calculation</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Belt mass (mB)</td>
+<td>kg/m</td>
+<td><input id="mB_bf" readonly></td>
+</tr>
+
+<tr>
+<td>Material mass (mG)</td>
+<td>kg/m</td>
+<td><input id="mG_bf" readonly></td>
+</tr>
+
+<tr>
+<td>Peripheral force (Te)</td>
+<td>N</td>
+<td><input id="Te_bf" readonly></td>
+</tr>
+
+<tr>
+<td>Wrap angle (φ)</td>
+<td>deg</td>
+<td><input id="phi" value="210"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Coefficient of friction between drive pulley and belt (μ)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Hover Table -->
+  <div class="info-box">
+    <table class="info-table">
+
+      <tr>
+        <th colspan="5">
+          IS 11592-2000 (Table 16 – Clause 8.5.4.3)
+        </th>
+      </tr>
+
+      <tr>
+        <th>Condition</th>
+        <th>Smooth Bare Steel</th>
+        <th>Rubber Lagging</th>
+        <th>Polyurethane Lagging</th>
+        <th>Ceramic Lagging</th>
+      </tr>
+
+      <tr>
+        <td>Dry Condition</td>
+        <td>0.35 – 0.40</td>
+        <td>0.40 – 0.45</td>
+        <td>0.35 – 0.40</td>
+        <td>0.40 – 0.45</td>
+      </tr>
+
+      <tr>
+        <td>Clean Wet (Water)</td>
+		<td onclick="setValue('mu_bf','0.10')">0.10</td>
+		<td onclick="setValue('mu_bf','0.35')">0.35</td>
+		<td onclick="setValue('mu_bf','0.35')">0.35</td>
+        <td>0.35 – 0.40</td>
+      </tr>
+
+      <tr>
+        <td>Wet & Dirty (Clay/Loam)</td>
+        <td>0.05 – 0.10</td>
+        <td>0.25 – 0.30</td>
+		<td onclick="setValue('mu_bf','0.25')">0.25</td>
+		<td onclick="setValue('mu_bf','0.30')">0.30</td>
+      </tr>
+
+      <tr>
+        <td>Very Wet & Dirty</td>
+		<td onclick="setValue('mu_bf','0.02')">0.02</td>
+		<td onclick="setValue('mu_bf','0.20')">0.20</td>
+		<td onclick="setValue('mu_bf','0.20')">0.20</td>
+		<td onclick="setValue('mu_bf','0.35')">0.35</td>
+      </tr>
+
+      <tr>
+        <td>PVC Belt Type</td>
+        <td colspan="4">0.25 – 0.35 (dry), 0.15 – 0.30 (wet), &lt;0.25 (dirty), 0.15 (very wet)</td>
+      </tr>
+
+    </table>
+  </div>
+</td>
+
+<td>-</td>
+<td><input id="mu_bf" value="0.35"></td>
+</tr>
+
+<tr>
+<td>Drive factor (ξ)</td>
+<td>-</td>
+<td><input id="xi" value="2"></td>
+</tr>
+
+<tr>
+<td>Gravity (g)</td>
+<td>m/s²</td>
+<td><input id="g_bf" readonly></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Idler spacing carrying (Pc)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Hover Table -->
+  <div class="info-box">
+    <table class="info-table">
+
+      <tr>
+        <th colspan="5">
+          IS 11592-2000 (Table 17 – Idler Spacing)
+        </th>
+      </tr>
+
+      <tr>
+        <th rowspan="2">Belt Width (mm)</th>
+        <th colspan="2">Troughed Belt (Carrying)</th>
+        <th>Flat Belt</th>
+        <th>Return Idler</th>
+      </tr>
+
+      <tr>
+        <th>0.40–1.20 t/m³</th>
+        <th>1.20–2.80 t/m³</th>
+        <th>-</th>
+        <th>-</th>
+      </tr>
+
+      <!-- SMALL WIDTH -->
+      <tr>
+        <td>300–650</td>
+		<td onclick="setValue('Pc','1.5')">1500</td>
+		<td onclick="setValue('Pc','1.2')">1200</td>
+		<td onclick="setValue('Pc','1')">1000</td>
+        <td rowspan="3" onclick="setValue('Pc','3')">3000</td>
+      </tr>
+
+      <!-- MEDIUM WIDTH -->
+      <tr>
+        <td>800–1000</td>
+		<td onclick="setValue('Pc','1.2')">1200</td>
+		<td onclick="setValue('Pc','1')">1000</td>
+		<td onclick="setValue('Pc','1')">1000</td>
+      
+      </tr>
+
+      <!-- LARGE WIDTH -->
+      <tr>
+        <td>1200–2000</td>
+		<td onclick="setValue('Pc','1')">1000</td>
+		<td onclick="setValue('Pc','1')">1000</td>
+		<td onclick="setValue('Pc','0.75')">750</td>
+       
+      </tr>
+
+    </table>
+  </div>
+</td>
+
+<td>m</td>
+<td><input id="Pc" value="1"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Idler spacing return (Pr)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Hover Table -->
+  <div class="info-box">
+    <table class="info-table">
+
+      <tr>
+        <th colspan="5">
+          IS 11592-2000 (Table 17 – Idler Spacing)
+        </th>
+      </tr>
+
+      <tr>
+        <th rowspan="2">Belt Width (mm)</th>
+        <th colspan="2">Troughed Belt (Carrying)</th>
+        <th>Flat Belt</th>
+        <th>Return Idler</th>
+      </tr>
+
+      <tr>
+        <th>0.40–1.20 t/m³</th>
+        <th>1.20–2.80 t/m³</th>
+        <th>-</th>
+        <th>-</th>
+      </tr>
+
+       <!-- SMALL WIDTH -->
+      <tr>
+        <td>300–650</td>
+		<td onclick="setValue('Pr','1.5')">1500</td>
+		<td onclick="setValue('Pr','1.2')">1200</td>
+		<td onclick="setValue('Pr','1')">1000</td>
+        <td rowspan="3" onclick="setValue('Pr','3')">3000</td>
+      </tr>
+
+      <!-- MEDIUM WIDTH -->
+      <tr>
+        <td>800–1000</td>
+		<td onclick="setValue('Pr','1.2')">1200</td>
+		<td onclick="setValue('Pr','1')">1000</td>
+		<td onclick="setValue('Pr','1')">1000</td>
+      
+      </tr>
+
+      <!-- LARGE WIDTH -->
+      <tr>
+        <td>1200–2000</td>
+		<td onclick="setValue('Pr','1')">1000</td>
+		<td onclick="setValue('Pr','1')">1000</td>
+		<td onclick="setValue('Pr','0.75')">750</td>
+       
+      </tr>
+
+
+    </table>
+  </div>
+</td>
+
+<td>m</td>
+<td><input id="Pr" value="3"></td>
+</tr>
+
+
+<tr>
+<td>Max sag (S)</td>
+<td>-</td>
+<td><input id="S" value="0.02"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcBeltForces()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Formula</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>e^(μφ)</td>
+<td>exp(μ × φ)</td>
+<td>-</td>
+<td><input class="result"  id="emphi" readonly></td>
+</tr>
+
+<tr>
+<td>Min tension return (T2min)</td>
+<td>Te×ξ/(e^(μφ)-1)</td>
+<td>N</td>
+<td><input class="result"  id="T2min" readonly></td>
+</tr>
+
+<tr>
+<td>Max belt tension (Tmax)</td>
+<td>Te(ξ/(e^(μφ)-1)+1)</td>
+<td>N</td>
+<td><input class="result"  id="Tmax" readonly></td>
+</tr>
+
+<tr>
+<td>Tmin carrying</td>
+<td>Pc(mB+mG)g/8S</td>
+<td>N</td>
+<td><input class="result"  id="Tmin_c" readonly></td>
+</tr>
+
+<tr>
+<td>Tmin return</td>
+<td>Pr·mB·g/8S</td>
+<td>N</td>
+<td><input class="result"  id="Tmin_r" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- =============================================
+     ============Gear box and Copuling ===========
+     =============================================-->
+<div id="Gearbox" class="tabcontent">
+
+<h3>Gearbox & Coupling Selection</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Belt speed (V)</td>
+<td>m/s</td>
+<td><input id="V_g" readonly></td>
+</tr>
+
+<tr>
+<td>Motor power (N)</td>
+<td>kW</td>
+<td><input id="N_g" value="200"></td>
+</tr>
+
+<tr>
+<td>Required power (Pm)</td>
+<td>kW</td>
+<td><input id="Pm_g" readonly></td>
+</tr>
+
+<tr>
+<td>Pulley diameter (D)</td>
+<td>m</td>
+<td><input id="D_g" value="1"></td>
+</tr>
+
+<tr>
+<td>Motor speed (n1)</td>
+<td>rpm</td>
+<td><input id="n_1" value="990"></td>
+</tr>
+
+<tr>
+<td class="info-wrap">
+  Service factor (f1)
+  <span class="info-icon">ℹ</span>
+
+  <!-- 🔥 Hover Table -->
+  <div class="info-box">
+    <table class="info-table">
+
+      <tr>
+        <th colspan="2">
+          IS 7403 – Service Factor (Gearbox)
+        </th>
+      </tr>
+
+      <tr>
+        <th>Duration of Service</th>
+        <th>Service Factor (f1)</th>
+      </tr>
+
+      <tr>
+        <td>2 hours/day</td>
+        <td onclick="setValue('f1', 0.9)">0.9</td>
+      </tr>
+
+      <tr>
+        <td>8 hours/day</td>
+       <td onclick="setValue('f1', 1.1)">1.1</td>
+      </tr>
+
+      <tr>
+        <td>12 hours/day</td>
+        <td onclick="setValue('f1', 1.25)">1.25</td>
+      </tr>
+
+      <tr>
+        <td>24 hours/day</td>
+        <td onclick="setValue('f1', 1.5)">1.5</td>
+      </tr>
+
+    </table>
+  </div>
+</td>
+
+<td>-</td>
+<td><input id="f1" value="1.5"></td>
+</tr>
+
+<tr>
+<td>Start factor (f2)</td>
+<td>-</td>
+<td><input id="f2" value="1.08"></td>
+</tr>
+
+<tr>
+<td>Thermal factor (ft)</td>
+<td>-</td>
+<td><input id="ft" value="0.63"></td>
+</tr>
+
+<tr>
+<td>Thermal capacity (PG1)</td>
+<td>kW</td>
+<td><input id="PG1" value="330"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcGear()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Formula</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Speed (n2)</td>
+<td>n2 = 60×V/(π×D)</td>
+<td>rpm</td>
+<td><input class="result"  id="n_2" readonly></td>
+</tr>
+
+<tr>
+<td>Gear Ratio (i)</td>
+<td>i = n1 / n2</td>
+<td>-</td>
+<td><input class="result"  id="ratio" readonly></td>
+</tr>
+
+<tr>
+<td>Nominal Power (PN)</td>
+<td>PN = N × f1 × f2</td>
+<td>kW</td>
+<td><input class="result"  id="PN" readonly></td>
+</tr>
+
+<tr>
+<td>Thermal Check</td>
+<td>PG1 × ft</td>
+<td>kW</td>
+<td><input class="result"  id="thermal" readonly></td>
+</tr>
+
+<tr>
+<td>High-speed coupling index</td>
+<td>1.5×N/(0.01×n1)</td>
+<td>-</td>
+<td><input class="result"  id="HS" readonly></td>
+</tr>
+
+<tr>
+<td>Low-speed coupling index</td>
+<td>1.5×N/(0.01×n2)</td>
+<td>-</td>
+<td><input class="result"  id="LS" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- =============================================
+     ==============Drive Pulley ==================
+     =============================================-->
+<div id="DrivePulley" class="tabcontent">
+
+<h3>Calculation of Drive Pulley</h3>
+
+<!-- SUB TABS -->
+<div class="tab">
+  <button class="subtablinks" onclick="openSubTab(event,'ShaftDia')" id="defaultSubOpen">Shaft Diameter</button>
+  <button class="subtablinks" onclick="openSubTab(event,'Deflection')">Shaft Deflection</button>
+  <button class="subtablinks" onclick="openSubTab(event,'BearingLife')">Bearing Life</button>
+  
+</div>
+
+<!-- ================= SHAFT DIA ================= -->
+<div id="ShaftDia" class="subtabcontent">
+
+<h3>Drive Pulley Shaft Diameter</h3>
+
+<table>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td> Max.belt tensile force  (Tmax)</td>
+<td>N</td>
+<td><input id="T1" readonly></td>
+</tr>
+
+<tr>
+<td>Minimum tensile force on return side (T2min)</td>
+<td>N</td>
+<td><input id="T2" readonly></td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+</tr>
+
+<tr>
+<td>Permissible tension for steel C-40 (τs)</td>
+<td>kN/cm²</td>
+<td><input id="ts" value="6.374"></td>
+</tr>
+
+<tr>
+<td>Bending stress concentration factor  (Kb)</td>
+<td>-</td>
+<td><input id="Kb" value="2"></td>
+</tr>
+
+<tr>
+<td> Torsion stress concentration factor (Kt)</td>
+<td>-</td>
+<td><input id="Kt" value="1.5"></td>
+</tr>
+
+<tr>
+<td>The angle between T1 and T2 force vectors (α)</td>
+<td>deg</td>
+<td><input id="alphaa" value="35"></td>
+</tr>
+
+<tr>
+<td>Weight of pulley rotating parts (W)</td>
+<td>N</td>
+<td><input id="W" value="14950"></td>
+</tr>
+
+<tr>
+<td>Arm of force (a)</td>
+<td>cm</td>
+<td><input id="a" value="35"></td>
+</tr>
+
+<tr>
+<td>Power after consideration of drive pulley loss(Pa)</td>
+<td>kW</td>
+<td><input id="Pa_s" readonly></td>
+</tr>
+
+<tr>
+<td>Speed (n2)</td>
+<td>rpm</td>
+<td><input id="n2_s" value="38.22"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcShaft()">Calculate</button>
+
+<br><br>
+
+<table>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>Resultant Load (R)</td>
+<td>kN</td>
+<td><input class="result"  id="R_s" readonly></td>
+</tr>
+
+<tr>
+<td>Bending Moment (Mb)</td>
+<td>kN·cm</td>
+<td><input class="result"  id="Mb" readonly></td>
+</tr>
+
+<tr>
+<td>Torque (Mt)</td>
+<td>kN·cm</td>
+<td><input class="result"  id="Mt" readonly></td>
+</tr>
+
+<tr>
+<td>Shaft Diameter (d)</td>
+<td>mm</td>
+<td><input class="result"  id="d" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- ================= DEFLECTION ================= -->
+<div id="Deflection" class="subtabcontent">
+
+<h3>Shaft Deflection</h3>
+
+<table>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>R</td>
+<td>kN</td>
+<td><input id="R_d" readonly></td>
+</tr>
+
+<tr>
+<td>a</td>
+<td>cm</td>
+<td><input id="a_d" value="35"></td>
+</tr>
+
+<tr>
+<td>Shaft Diameter (cm)</td>
+<td>cm⁴</td>
+<td><input id="D_s" value="21"></td>
+</tr>
+
+<tr>
+<td>Ls</td>
+<td>cm</td>
+<td><input id="Ls" value="185"></td>
+</tr>
+
+<tr>
+<td>E</td>
+<td>kg/cm²</td>
+<td><input id="E_drive" value="2100000"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcDeflection()">Calculate</button>
+
+<br><br>
+
+<table>
+
+<tr>
+<td>I</td>
+<td>cm⁴</td>
+<td><input class="result"  id="I" readonly></td>
+</tr>
+
+<tr>
+<td>Deflection (f)</td>
+<td>mm</td>
+<td><input class="result"  id="f_d" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- ================= BEARING LIFE ================= -->
+<div id="BearingLife" class="subtabcontent">
+
+<h3>Bearing Life</h3>
+
+<table>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>C</td>
+<td>kN</td>
+<td><input id="C" value="1580"></td>
+</tr>
+
+<tr>
+<td>R</td>
+<td>kN</td>
+<td><input id="R_b" readonly></td>
+</tr>
+
+<tr>
+<td>X</td>
+<td>-</td>
+<td><input id="X" value="1.2"></td>
+</tr>
+
+<tr>
+<td>Y</td>
+<td>-</td>
+<td><input id="Y" value="0"></td>
+</tr>
+
+<tr>
+<td>Fa</td>
+<td>kN</td>
+<td><input id="Fa" value="0"></td>
+</tr>
+
+<tr>
+<td>Speed n2</td>
+<td>rpm</td>
+<td><input id="n2_b" value="38.22"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcBearing()">Calculate</button>
+
+<br><br>
+
+<table>
+<tr>
+<td>Fr</td>
+<td>kN</td>
+<td><input class="result"  id="Fr" readonly></td>
+</tr>
+
+<tr>
+<td>P</td>
+<td>kN</td>
+<td><input class="result"  id="P_b" readonly></td>
+</tr>
+
+<tr>
+<td>Life (million rev)</td>
+<td>-</td>
+<td><input class="result"  id="L_d" readonly></td>
+</tr>
+
+<tr>
+<td>Life (hours)</td>
+<td>h</td>
+<td><input class="result"  id="Lh" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- =============================================
+     ==============Tail Pulley ==================
+     =============================================-->
+<div id="TailPulley" class="tabcontent">
+
+<h3>Calculation of Tail Pulley</h3>
+
+<!-- SUB TABS -->
+<div class="tab">
+  <button class="subtablinks" onclick="openSubTab(event,'TailShaft')" id="defaultTailOpen">Shaft Dia</button>
+  <button class="subtablinks" onclick="openSubTab(event,'TailDeflection')">Shaft Deflection</button>
+  <button class="subtablinks" onclick="openSubTab(event,'TailBearing')">Bearing Life</button>
+</div>
+
+<!-- ================= SHAFT ================= -->
+<div id="TailShaft" class="subtabcontent">
+
+<h3>Shaft Diameter</h3>
+
+<table>
+<tr><th>Parameter</th><th>Unit</th><th>Value</th></tr>
+
+<tr>
+<td>Tmax</td>
+<td>N</td>
+<td><input id="T1_tp" readonly></td>
+</tr>
+
+<tr>
+<td>L</td>
+<td>m</td>
+<td><input id="L_tp" readonly></td>
+</tr>
+
+<tr>
+<td>mC</td>
+<td>kg/m</td>
+<td><input id="mC_tp" readonly></td>
+</tr>
+
+<tr>
+<td>mB</td>
+<td>kg/m</td>
+<td><input id="mB_tp" readonly></td>
+</tr>
+
+<tr>
+<td>mG</td>
+<td>kg/m</td>
+<td><input id="mG_tp" readonly></td>
+</tr>
+
+<tr>
+<td>f</td>
+<td>-</td>
+<td><input id="f_tp" readonly></td>
+</tr>
+
+<tr>
+<td>g</td>
+<td>m/s²</td>
+<td><input id="g_tp" readonly></td>
+</tr>
+
+<tr>
+<td>Ra</td>
+<td>N</td>
+<td><input id="Ra_tp" readonly></td>
+</tr>
+
+<tr>
+<td>Rska</td>
+<td>N</td>
+<td><input id="Rska_tp" readonly></td>
+</tr>
+
+<tr>
+<td>Rsk</td>
+<td>N</td>
+<td><input id="Rsk_tp" readonly></td>
+</tr>
+
+<tr>
+<td>C1</td>
+<td>-</td>
+<td><input id="C1_tp" readonly></td>
+</tr>
+
+<tr>
+<td>μo</td>
+<td>-</td>
+<td><input id="muo_tp" readonly></td>
+</tr>
+
+<tr>
+<td>i</td>
+<td>deg</td>
+<td><input id="i_tp" readonly></td>
+</tr>
+
+<tr>
+<td>L1</td>
+<td>m</td>
+<td><input id="L1_tp" readonly></td>
+</tr>
+
+<tr>
+<td>RS1</td>
+<td>N</td>
+<td><input id="RS1_tp" readonly></td>
+</tr>
+
+<tr>
+<td>RB</td>
+<td>N</td>
+<td><input id="RB_tp" value="100"></td>
+</tr>
+
+<tr>
+<td>Rw1</td>
+<td>N</td>
+<td><input id="Rw1_tp" value="175"></td>
+</tr>
+
+<tr>
+<td>W</td>
+<td>N</td>
+<td><input id="W_tp" value="7900"></td>
+</tr>
+
+<tr>
+<td>a</td>
+<td>cm</td>
+<td><input id="a_tp" value="35"></td>
+</tr>
+
+<tr>
+<td>τs</td>
+<td>kN/cm²</td>
+<td><input id="ts_tp" value="6.374"></td>
+</tr>
+
+<tr>
+<td>Kb</td>
+<td>-</td>
+<td><input id="Kb_tp" value="2"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcTailShaft()">Calculate</button>
+
+<br><br>
+
+<table>
+<tr>
+<td>Ttc</td>
+<td>N</td>
+<td><input class="result"  id="Ttc" readonly></td>
+</tr>
+
+<tr>
+<td>Ttr</td>
+<td>N</td>
+<td><input class="result"  id="Ttr" readonly></td>
+</tr>
+
+<tr>
+<td>R</td>
+<td>kN</td>
+<td><input class="result"  id="R_tp" readonly></td>
+</tr>
+
+<tr>
+<td>Mb</td>
+<td>kN·cm</td>
+<td><input class="result"  id="Mb_tp" readonly></td>
+</tr>
+
+<tr>
+<td>d</td>
+<td>mm</td>
+<td><input class="result"  id="d_tp" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- ================= DEFLECTION ================= -->
+<div id="TailDeflection" class="subtabcontent">
+
+<h3>Shaft Deflection</h3>
+
+<table>
+<tr>
+<td>R</td>
+<td>kN</td>
+<td><input id="R_td" readonly></td>
+</tr>
+
+<tr>
+<td>a</td>
+<td>cm</td>
+<td><input id="a_td" readonly></td>
+</tr>
+
+<tr>
+<td>Shaft Dia</td>
+<td>cm</td>
+<td><input id="D_td" value="17"></td>
+</tr>
+
+<tr>
+<td>Ls</td>
+<td>cm</td>
+<td><input id="Ls_td" value="185"></td>
+</tr>
+
+<tr>
+<td>E</td>
+<td>kg/cm²</td>
+<td><input id="E_td" readonly></td>
+</tr>
+
+</table>
+
+
+<button class="btn" onclick="calcTailDeflection()">Calculate</button>
+
+
+<table>
+<tr>
+<td>I</td>
+<td>cm⁴</td>
+<td><input class="result"  id="I_td" readonly></td>
+</tr>
+
+<tr>
+<td>Deflection (f)</td>
+<td>mm</td>
+<td><input class="result"  id="f_td" readonly></td>
+</tr>
+</table>
+</div>
+
+<!-- ================= BEARING ================= -->
+<div id="TailBearing" class="subtabcontent">
+
+<h3>Bearing Life</h3>
+
+<table>
+<tr>
+<td>C</td>
+<td>kN</td>
+<td><input id="C_tb" value="1050"></td>
+</tr>
+<tr>
+<td>R</td>
+<td>kN</td>
+<td><input id="R_tb" readonly></td>
+</tr>
+
+<tr>
+<td>X</td>
+<td>-</td>
+<td><input id="X_tb" value="1.2"></td>
+</tr>
+
+<tr>
+<td>n</td>
+<td>rpm</td>
+<td><input id="n_tb" value="47.77"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcTailBearing()">Calculate</button>
+
+<br><br>
+<table>
+
+<tr>
+<td>Radial load on bearing</td>
+<td>KN</td>
+<td><input class="result"  id="Fr_tb" readonly></td>
+</tr>
+
+<tr>
+<td>Equivalent load on bearing</td>
+<td>KN</td>
+<td><input class="result"  id="P_tb" readonly></td>
+</tr>
+
+<tr>
+<td>Service life in million revolutions</td>
+<td>million Rev.</td>
+<td><input class="result"  id="L_tb" readonly></td>
+</tr>
+
+<tr>
+<td>Service life in hours</td>
+<td>hr</td>
+<td><input class="result"  id="Lh_tb" readonly></td>
+</tr>
+
+</table>
+</div>
+
+</div>
+
+<!-- =============================================
+     ==============Snub Pulley ==================
+     =============================================-->
+<div id="SnubPulley" class="tabcontent">
+
+<h3>Calculation of Snub Pulley</h3>
+
+<!-- SUB TABS -->
+<div class="tab">
+  <button class="subtablinks" onclick="openSubTab(event,'SnubShaft')" id="defaultSnubOpen">Shaft Dia</button>
+  <button class="subtablinks" onclick="openSubTab(event,'SnubDeflection')">Shaft Deflection</button>
+  <button class="subtablinks" onclick="openSubTab(event,'SnubBearing')">Bearing Life</button>
+</div>
+
+<!-- ================= SHAFT ================= -->
+<div id="SnubShaft" class="subtabcontent">
+
+<h3>Snub Pulley Shaft Diameter</h3>
+
+<table>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>T2min</td>
+<td>N</td>
+<td><input id="T2_s" readonly></td>
+</tr>
+
+<tr>
+<td>Angle α</td>
+<td>deg</td>
+<td><input id="alpha_s" readonly></td>
+</tr>
+
+<tr>
+<td>Weight (W)</td>
+<td>N</td>
+<td><input id="W_s" value="3800"></td>
+</tr>
+
+<tr>
+<td>τs</td>
+<td>kN/cm²</td>
+<td><input id="ts_s" readonly></td>
+</tr>
+
+<tr>
+<td>Kb</td>
+<td>-</td>
+<td><input id="Kb_s" readonly></td>
+</tr>
+
+<tr>
+<td>Arm (a)</td>
+<td>cm</td>
+<td><input id="a_s" readonly></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcSnubShaft()">Calculate</button>
+
+<br><br>
+
+<table>
+<tr>
+<td>Resultant Load (R)</td>
+<td>kN</td>
+<td><input class="result"  id="R_snub" readonly></td>
+</tr>
+
+<tr>
+<td>Bending Moment (Mb)</td>
+<td>kN·cm</td>
+<td><input class="result"  id="Mb_snub" readonly></td>
+</tr>
+
+<tr>
+<td>Shaft Dia (d)</td>
+<td>mm</td>
+<td><input class="result"  id="d_snub" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- ================= DEFLECTION ================= -->
+<div id="SnubDeflection" class="subtabcontent">
+
+<h3>Shaft Deflection</h3>
+
+<table>
+
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>R</td>
+<td>kN</td>
+<td><input id="R_sd" readonly></td>
+</tr>
+
+<tr>
+<td>a</td>
+<td>cm</td>
+<td><input id="a_sd" readonly></td>
+</tr>
+
+<tr>
+<td>Snub Shaft Dia</td>
+<td>cm</td>
+<td><input id="D_sd" value="13.5"></td>
+</tr>
+
+<tr>
+<td>Ls</td>
+<td>cm</td>
+<td><input id="Ls_sd" value="185"></td>
+</tr>
+
+<tr>
+<td>E</td>
+<td>kg/cm²</td><td><input id="E_sd" readonly></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcSnubDeflection()">Calculate</button>
+
+<br><br>
+
+<table>
+
+<tr>
+<td>I</td>
+<td>cm⁴</td>
+<td><input class="result"  id="I_sd" readonly></td>
+</tr>
+
+<tr>
+<td>Deflection (f)</td>
+<td>mm</td>
+<td><input class="result"  id="f_sd" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- ================= BEARING ================= -->
+<div id="SnubBearing" class="subtabcontent">
+
+<h3>Bearing Life</h3>
+
+<table>
+
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>C</td>
+<td>kN</td>
+<td><input id="C_sd" value="621"></td>
+</tr>
+
+<tr>
+<td>R</td>
+<td>kN</td>
+<td><input id="R_sb" readonly></td>
+</tr>
+
+<tr>
+<td>X</td>
+<td>-</td>
+<td><input id="X_sd" value="1.2"></td>
+</tr>
+
+<tr>
+<td>Speed (n)</td>
+<td>rpm</td><td><input id="n_sd" value="60.66"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcSnubBearing()">Calculate</button>
+
+<br><br>
+
+<table>
+
+<tr>
+<td>Fr</td>
+<td>kN</td>
+<td><input class="result"  id="Fr_sd" readonly></td>
+</tr>
+
+<tr>
+<td>P</td>
+<td>kN</td>
+<td><input class="result"  id="P_sd" readonly></td>
+</tr>
+
+<tr>
+<td>Life (L)</td>
+<td>mill rev</td>
+<td><input class="result"  id="L_sd" readonly></td>
+</tr>
+
+<tr>
+<td>Life (Lh)</td>
+<td>h</td>
+<td><input class="result"  id="Lh_sd" readonly></td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+<!-- =============================================
+     ==============Takeup Pulley ==================
+     =============================================-->
+<div id="TakeUpPulley" class="tabcontent">
+
+<h3>Calculation of Take-Up Pulley</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Distance (L1)</td>
+<td>m</td>
+<td><input id="L1_tu" value="6.96"></td>
+</tr>
+
+<tr>
+<td>T2min</td>
+<td>N</td>
+<td><input id="T2_tu" readonly></td>
+</tr>
+
+<tr>
+<td>Friction (f)</td>
+<td>-</td>
+<td><input id="f_tu" readonly></td>
+</tr>
+
+<tr>
+<td>Gravity (g)</td>
+<td>m/s²</td>
+<td><input id="g_tu" readonly></td>
+</tr>
+
+<tr>
+<td>mr</td>
+<td>kg/m</td>
+<td><input id="mr_tu" readonly></td>
+</tr>
+
+<tr>
+<td>mB</td>
+<td>kg/m</td>
+<td><input id="mB_tu" readonly></td>
+</tr>
+
+<tr>
+<td>μo</td>
+<td>-</td>
+<td><input id="muo_tu" readonly></td>
+</tr>
+
+<tr>
+<td>Angle i</td>
+<td>deg</td>
+<td><input id="i_tu" value="2"></td>
+</tr>
+
+<tr>
+<td>Angle τ</td>
+<td>deg</td>
+<td><input id="tau" value="10"></td>
+</tr>
+
+<tr>
+<td>RBC</td>
+<td>N</td>
+<td><input id="RBC_tu" readonly></td>
+</tr>
+
+<tr>
+<td>RB</td>
+<td>N</td>
+<td><input id="RB_tu" value="100"></td>
+</tr>
+
+<tr>
+<td>Rw</td>
+<td>N</td>
+<td><input id="Rw_tu" value="140"></td>
+</tr>
+
+<tr>
+<td>Rw1</td>
+<td>N</td>
+<td><input id="Rw1_tu" value="175"></td>
+</tr>
+
+<tr>
+<td>Weight (W)</td>
+<td>N</td>
+<td><input id="W_tu" value="7900"></td>
+</tr>
+
+<tr>
+<td>Arm (a)</td>
+<td>cm</td>
+<td><input id="a_tu" readonly></td>
+</tr>
+
+<tr>
+<td>τs</td>
+<td>kN/cm²</td>
+<td><input id="ts_tu" readonly></td>
+</tr>
+
+<tr>
+<td>Kb</td>
+<td>-</td>
+<td><input id="Kb_tu" readonly></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcTakeUp()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+<th>Parameter</th>
+<th>Unit</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>Inlet tension (Ttu)</td>
+<td>N</td>
+<td><input class="result"  id="Ttu" readonly></td>
+</tr>
+
+<tr>
+<td>Outlet tension (Ttu')</td>
+<td>N</td>
+<td><input class="result"  id="Ttu2" readonly></td>
+</tr>
+
+<tr>
+<td>Resultant Load (R)</td>
+<td>kN</td>
+<td><input class="result"  id="R_tu" readonly></td>
+</tr>
+
+<tr>
+<td>Bending Moment (Mb)</td>
+<td>kN·cm</td>
+<td><input class="result"  id="Mb_tu" readonly></td>
+</tr>
+
+<tr>
+<td>Shaft Dia (d)</td>
+<td>mm</td><td>
+<input class="result"  id="d_tu" readonly></td>
+</tr>
+
+</table>
+
+</div>
+<!-- =============================================
+     ==============Bend Pulley ==================
+     =============================================-->
+<div id="BendPulley" class="tabcontent">
+
+<h3>Calculation of Bend Pulley</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Outlet tension (Ttu')</td>
+<td>N</td>
+<td><input id="Ttu_bp" readonly></td>
+</tr>
+
+<tr>
+<td>Arm (a)</td>
+<td>cm</td>
+<td><input id="a_bp" readonly></td>
+</tr>
+
+<tr>
+<td>Permissible stress (τs)</td>
+<td>kN/cm²</td>
+<td><input id="ts_bp" readonly></td>
+</tr>
+
+<tr>
+<td>Kb</td>
+<td>-</td>
+<td><input id="Kb_bp" readonly></td>
+</tr>
+
+<tr>
+<td>Weight (W)</td>
+<td>N</td>
+<td><input id="W_bp" value="4800"></td>
+</tr>
+
+<tr>
+<td>Slope (δ1)</td>
+<td>deg</td>
+<td><input id="delta_bp" value="0"></td>
+</tr>
+
+</table>
+
+<br>
+<button class="btn" onclick="calcBend()">Calculate</button>
+
+<br><br>
+
+<h3>Results</h3>
+
+<table>
+<tr>
+  <th>Parameter</th>
+  <th>Unit</th>
+  <th>Value</th>
+</tr>
+
+<tr>
+<td>Resultant Load (R)</td>
+<td>kN</td>
+<td><input class="result"  id="R_bp" readonly></td>
+</tr>
+
+<tr>
+<td>Bending Moment (Mb)</td>
+<td>kN·cm</td>
+<td><input class="result"  id="Mb_bp" readonly></td>
+</tr>
+
+<tr>
+<td>Shaft Diameter (d)</td>
+<td>mm</td>
+<td><input class="result"  id="d_bp" readonly></td>
+</tr>
+
+</table>
+
+</div>
+	 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script type="module" src="config.js"></script>
+<script type="module" src="supabase.js"></script> 
+<script type="module" src="conv.js"></script>
+
+</body>
+</html>

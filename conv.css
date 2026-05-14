@@ -1,0 +1,388 @@
+body {
+  font-family: "Segoe UI", Arial;
+  margin: 20px;
+  background: linear-gradient(135deg, #eef2f7, #d9e4f5);
+}
+
+/* ===== HEADING ===== */
+h2 {
+  text-align: center;
+  color: #1a237e;
+  background: #e3f2fd;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* ===== MAIN TABS ===== */
+.tab {
+  display: flex;
+  flex-wrap: wrap;   /* 🔥 yahi magic hai */
+  gap: 5px;
+  border-bottom: 3px solid #3f51b5;
+  margin-bottom: 10px;
+}
+.tab {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;   /* 👈 center alignment */
+  gap: 5px;
+  border-bottom: 3px solid #3f51b5;
+}
+
+.tab button {
+  background: linear-gradient(135deg, #e3eafc, #c5cae9);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 4px;
+  border-radius: 8px 8px 0 0;
+  font-weight: 600;
+  color: #1a237e;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Hover effect */
+.tab button:hover {
+  background: linear-gradient(135deg, #7986cb, #3f51b5);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Active tab */
+.tab button.active {
+  background: linear-gradient(135deg, #3f51b5, #1a237e);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* 🔥 Bottom highlight line (premium feel) */
+.tab button.active::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  bottom: -3px;
+  width: 80%;
+  height: 3px;
+  background: #ffca28;
+  border-radius: 10px;
+}
+.tab button:hover {
+  background: #9fa8da;
+  color: white;
+}
+
+.tab button.active {
+  background: #3f51b5;
+  color: white;
+}
+
+/* ===== TAB CONTENT ===== */
+.tabcontent {
+  display: none;
+  padding: 15px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* ===== SUB TABS ===== */
+.subtablinks {
+  background-color: #eeeeee;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  margin: 5px 3px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.subtablinks:hover {
+  background-color: #64b5f6;
+  color: white;
+}
+
+.subtablinks.active {
+  background-color: #1976d2;
+  color: white;
+}
+
+.subtabcontent {
+  display: none;
+  margin-top: 10px;
+}
+
+/* ===== TABLE FIXED PROFESSIONAL ===== */
+table {
+  border-collapse: collapse;
+  width: 85%;
+  margin: 20px auto;
+  background: white;
+  border-radius: 10px;
+  overflow: visible;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Header */
+th {
+  background: linear-gradient(45deg, #3949ab, #1e88e5);
+  color: white;
+  padding: 12px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* Cells */
+td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;   /* 🔥 important (lines visible) */
+}
+
+/* Alternate rows */
+tr:nth-child(even) {
+  background-color: #f4f7fb;
+}
+
+/* Hover effect */
+tr:hover {
+  background-color: #e3f2fd;
+  transition: 0.2s;
+}
+
+.result-row td {
+  background-color: #e8f5e9;
+  font-weight: bold;
+}
+/* ===== INPUT TABLE SPECIAL ===== */
+.tabcontent table:first-of-type {
+  background: linear-gradient(135deg, #f8fbff, #eef3fb);
+  border: 1px solid #d0d7e2;
+}
+
+.tabcontent table:first-of-type th {
+  background: linear-gradient(45deg, #5c6bc0, #3949ab);
+}
+
+.tabcontent table:first-of-type tr:hover {
+  background-color: #e8edf7;
+}
+/* ===== INPUT ===== */
+input {
+  width: 90px;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+/* ===== LINKED VALUES (readonly but NOT result) ===== */
+input[readonly]:not(.result) {
+  background: linear-gradient(135deg, #f1f3f6, #e0e6ed);
+  border: 1px dashed #90a4ae;
+  color: #455a64;
+  font-weight: 500;
+  cursor: not-allowed;
+}
+
+/* subtle glow on hover */
+input[readonly]:not(.result):hover {
+  background: linear-gradient(135deg, #e3e8ef, #d6dde6);
+}
+
+
+
+
+/* ===== BUTTON ===== */
+button.btn {
+  padding: 14px 32px;              /* 🔥 bigger size */
+  background: linear-gradient(135deg, #1976d2, #0d47a1);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;                 /* 🔥 bigger text */
+  min-width: 180px;                /* 🔥 wide button */
+  display: block;                  /* center ke liye */
+  margin: 15px auto;               /* center align */
+  text-align: center;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+}
+
+/* Hover */
+button.btn:hover {
+  background: linear-gradient(135deg, #42a5f5, #1565c0);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
+
+/* Click */
+button.btn:active {
+  transform: scale(0.95);
+}
+/* ===== SECTION HEADINGS ===== */
+h3 {
+  text-align: center;
+  color: #0d47a1;
+  margin-bottom: 10px;
+}
+
+/* ===== SCROLL FIX (IMPORTANT FOR MANY TABS) ===== */
+.tab::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tab::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+input.result {
+  background: linear-gradient(135deg, #e3f2fd, #ffffff);
+  border: 2px solid #1e88e5;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: bold;
+  color: #0d47a1;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  width: 120px;
+  letter-spacing: 1px;
+  transition: 0.3s ease;
+}
+
+/* Hover effect */
+input.result:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #bbdefb, #ffffff);
+}
+tr:has(input.result) {
+  background: #e3f2fd;
+}
+input.result {
+  width: 120px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  border-left: 5px solid #303f9f;
+}
+.result:focus {
+  outline: none;
+  border-color: #1a237e;
+  box-shadow: 0 0 8px rgba(63,81,181,0.5);
+}
+/* Wrapper */
+.info-wrap {
+  position: relative;
+  cursor: pointer;
+}
+
+/* ℹ icon */
+.info-icon {
+  color: #1e88e5;
+  margin-left: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Hidden box */
+.info-box {
+  display: none;
+  position: absolute;
+  top: 25px;
+  left: 0;
+  background: #4db6ac;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 100;
+  width: 600px;
+}
+
+/* Show on hover */
+.info-wrap:hover .info-box {
+  display: block;
+}
+
+/* Table inside tooltip */
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.info-table th {
+  background: #1976d2;
+  color:white;
+  padding: 5px;
+}
+
+.info-table td {
+  background: #1976d2;
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: center;
+}
+/* Image inside tooltip */
+.info-img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 6px;
+}
+.info-img {
+  width: 320px;
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+}
+
+/* 🔥 hover zoom */
+.info-img:hover {
+  transform: scale(2.0);
+  z-index: 9999;
+}
+
+/*service factor table gear coupling */
+
+/* 🎯 Sirf info-box ke andar aur jahan onclick ho */
+/
+.info-box td[onclick] {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: bold;
+  color: #ffffff;   /* white text (table bg ke hisab se) */
+}
+
+/* 🔥 STRONG HOVER (clear visible) */
+.info-box td[onclick]:hover {
+  background: #ffca28;          /* 🔥 amber/yellow (high contrast) */
+  color: #000000;               /* black text */
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+/* print css*/
+@media print {
+
+  /* ❌ buttons hide */
+  button {
+    display: none;
+  }
+
+  /* ❌ tabs header hide */
+  .tab {
+    display: none;
+  }
+
+  /* ✅ content full width */
+  body {
+    zoom: 90%;
+  }
+
+  /* ✅ page break */
+  .tabcontent {
+    page-break-after: always;
+  }
+
+}
