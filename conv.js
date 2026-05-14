@@ -114,6 +114,9 @@ async function saveProject() {
 
   let id = document.getElementById("projectId").value.trim();
 
+  let plant = document.getElementById("plant").value;
+  let area = document.getElementById("area").value;
+
   if(!id){
     alert("Enter Project ID!");
     return;
@@ -132,6 +135,8 @@ async function saveProject() {
     .insert([
       {
         project_name: id,
+        plant: plant,
+        area: area,
         input_data: data
       }
     ]);
@@ -144,7 +149,6 @@ async function saveProject() {
     loadProjectList();
   }
 }
-
 
 // 🔹 Load Project List (FILTERED)
 async function loadProjectList(){
@@ -173,38 +177,39 @@ async function loadProjectList(){
 }
 
 // 🔹 Load Project Data
-async function loadProject(){
-
-  let id = document.getElementById("projectList").value;
-
-  if(!id) return;
+async function loadProjectList(){
 
   const { data, error } = await supabase
     .from("calculations")
-    .select("*")
-    .eq("id", id)
-    .single();
+    .select("id, project_name, plant, area");
 
   if(error){
     console.log(error);
     return;
   }
 
-  let input = data.input_data;
+  let list = document.getElementById("projectList");
 
-  for(let key in input){
+  list.innerHTML = '<option value="">📂 Load Project</option>';
 
-    let el = document.getElementById(key);
+  data.forEach(project => {
 
-    if(el){
-      el.value = input[key];
-    }
-  }
-
-  document.getElementById("projectId").value =
-    data.project_name;
+    list.innerHTML += `
+      <option value="${project.id}">
+        ${project.plant} | ${project.area} | ${project.project_name}
+      </option>
+    `;
+  });
 }
 
+  document.getElementById("projectId").value =
+  data.project_name;
+
+document.getElementById("plant").value =
+  data.plant;
+
+document.getElementById("area").value =
+  data.area;
   
 
 
