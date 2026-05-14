@@ -50,18 +50,36 @@
   flex-wrap:wrap;
 ">
 
-  <input id="projectId" placeholder="Enter Project ID"
-    style="padding:6px; border-radius:6px; border:1px solid #ccc;">
+<select id="plant"
+  style="padding:6px; border-radius:6px; border:1px solid #ccc;">
 
-  <button onclick="saveProject()" 
-    style="background:#2e7d32; color:#fff; border:none; padding:6px 12px; border-radius:6px;">
-    ➕ Save
-  </button>
+  <option value="">🏭 Select Plant</option>
+  <option value="BSP">BSP</option>
+  <option value="RSP">RSP</option>
+  <option value="ISP">ISP</option>
+  <option value="BSL">BSL</option>
+  <option value="DSP">DSP</option>
+  <option value="OTHERS">OTHERS</option>
 
-  <select id="projectList" onchange="loadProject()"
-    style="padding:6px; border-radius:6px;">
-    <option value="">📂 Load Project</option>
-  </select>
+</select>
+
+<input id="area"
+  placeholder="Enter Area / Department"
+  style="padding:6px; border-radius:6px; border:1px solid #ccc;">
+
+<input id="projectId"
+  placeholder="Enter Project ID"
+  style="padding:6px; border-radius:6px; border:1px solid #ccc;">
+
+<button onclick="saveProject()"
+  style="background:#2e7d32; color:#fff; border:none; padding:6px 12px; border-radius:6px;">
+  ➕ Save
+</button>
+
+<select id="projectList" onchange="loadProject()"
+  style="padding:6px; border-radius:6px;">
+  <option value="">📂 Load Project</option>
+</select>
 
 </div>
 <div class="tab">
