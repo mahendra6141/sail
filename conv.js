@@ -150,31 +150,7 @@ async function saveProject() {
   }
 }
 
-// 🔹 Load Project List (FILTERED)
-async function loadProjectList(){
 
-  const { data, error } = await supabase
-    .from("calculations")
-    .select("id, project_name");
-
-  if(error){
-    console.log(error);
-    return;
-  }
-
-  let list = document.getElementById("projectList");
-
-  list.innerHTML = '<option value="">📂 Load Project</option>';
-
-  data.forEach(project => {
-
-    list.innerHTML += `
-      <option value="${project.id}">
-        ${project.project_name}
-      </option>
-    `;
-  });
-}
 
 // 🔹 Load Project Data
 async function loadProjectList(){
