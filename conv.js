@@ -159,35 +159,19 @@ async function saveProject() {
 
 
 
-// 🔹 Load Project List Plant Wise
+// 🔹 Load Project List
 async function loadProjectList(){
 
-  // 🔥 selected filter plant
-  let selectedPlant =
-    document.getElementById("filterPlant").value;
-
-  // 🔥 base query
-  let query = supabase
+  const { data, error } = await supabase
     .from("calculations")
     .select("id, project_name, plant, area");
-
-  // 🔥 filter apply
-  if(selectedPlant){
-
-    query = query.eq("plant", selectedPlant);
-
-  }
-
-  // 🔥 data fetch
-  const { data, error } = await query;
 
   if(error){
     console.log(error);
     return;
   }
 
-  let list =
-    document.getElementById("projectList");
+  let list = document.getElementById("projectList");
 
   list.innerHTML = `
     <option value="">
@@ -195,18 +179,18 @@ async function loadProjectList(){
     </option>
   `;
 
-  // 🔥 filtered projects
   data.forEach(project => {
 
     list.innerHTML += `
       <option value="${project.id}">
-        ${project.area} | ${project.project_name}
+        ${project.plant} | ${project.area} | ${project.project_name}
       </option>
     `;
 
   });
 
 }
+
 
 
 
