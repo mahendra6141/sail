@@ -153,6 +153,11 @@ async function loadProjectList(){
     .from("calculations")
     .select("id, project_name");
 
+  if(error){
+    console.log(error);
+    return;
+  }
+
   let list = document.getElementById("projectList");
 
   list.innerHTML = '<option value="">📂 Load Project</option>';
@@ -166,7 +171,6 @@ async function loadProjectList(){
     `;
   });
 }
-
 
 // 🔹 Load Project Data
 async function loadProject(){
