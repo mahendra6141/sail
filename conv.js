@@ -8,28 +8,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 });
 
-async function login() {
-
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if(error){
-    alert("Login failed");
-    return;
-  }
-
-  window.location.href = "dashboard.html";
-}
-
-async function logout() {
-  await supabase.auth.signOut();
-  window.location.href = "login.html";
-}
 
 async function protectPage() {
 
