@@ -114,8 +114,8 @@ async function saveProject() {
 
   let id = document.getElementById("projectId").value.trim();
 
-  let plant = document.getElementById("plant").value;
-  let area  = document.getElementById("area").value;
+  let plant = document.getElementById("plant").value.trim();
+  let area  = document.getElementById("area").value.trim();
 
   if(!id){
     alert("Enter Project ID!");
@@ -124,39 +124,58 @@ async function saveProject() {
 
   let data = {};
 
-  // 🔥 sab input save karo
-  document.querySelectorAll("input").forEach(el => {
+  // 🔥 sab fields save karo
+  document
+    .querySelectorAll("input, select, textarea")
+    .forEach(el => {
 
-    if(el.id){
-      data[el.id] = el.value;
-    }
+      if(el.id){
 
-  });
+        // checkbox support
+        if(el.type === "checkbox"){
+          data[el.id] = el.checked;
+        }
 
+        else{
+          data[el.id] = el.value;
+        }
+
+      }
+
+    });
+
+  // 🔥 UPSERT = insert + update
   const { error } = await supabase
     .from("calculations")
-    .insert([
+    .upsert(
+      [
+        {
+          project_name: id,
+          plant: plant,
+          area: area,
+          input_data: data
+        }
+      ],
       {
-        project_name: id,
-        plant: plant,
-        area: area,
-        input_data: data
+        onConflict: "project_name,plant,area"
       }
-    ]);
+    );
 
   if(error){
 
     console.log(error);
+
     alert("Save Failed");
 
   } else {
 
-    alert("Project Saved!");
+    alert("Project Saved / Updated!");
+
     loadProjectList();
 
   }
-}
 
+}
 
 
 // 🔹 Load Project List
