@@ -1,9 +1,12 @@
 import supabase from "./supabase.js";
 
-window.addEventListener("DOMContentLoaded", () => {
-  protectPage();
-});
+window.addEventListener("DOMContentLoaded", async () => {
 
+  if(window.location.pathname.includes("dashboard")){
+    await protectPage();
+  }
+
+});
 
 async function login() {
 
@@ -43,41 +46,27 @@ async function protectPage() {
     .eq("id", user.id)
     .single();
 
-  window.userRole = profile.role;
+  window.userRole = profile?.role || "engineer";
 
-  // UI control (basic)
-  if(profile.role === "viewer"){
-    document.querySelectorAll(".editable").forEach(el => {
-      el.style.display = "none";
-    });
+  if(profile?.role === "viewer"){
+    document.querySelectorAll(".editable")
+      .forEach(el => el.style.display = "none");
   }
 
-  if(profile.role === "engineer"){
-    document.querySelectorAll(".admin-only").forEach(el => {
-      el.style.display = "none";
-    });
+  if(profile?.role === "engineer"){
+    document.querySelectorAll(".admin-only")
+      .forEach(el => el.style.display = "none");
   }
 
 }
 
-async function checkSession() {
-
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if(user){
-    window.location.href = "dashboard.html";
-  }
-
-}
-
-supabase.auth.onAuthStateChange((event, session) => {
+supabase.auth.onAuthStateChange((event) => {
 
   if(event === "SIGNED_OUT"){
     window.location.href = "login.html";
   }
 
 });
-
 
 
 
