@@ -1,4 +1,4 @@
-import { createClient } from ".../+esm"
+import supabase from "./supabase.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
