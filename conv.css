@@ -392,9 +392,11 @@ input.result {
   overflow:auto;
 }
 
+
 svg{
   background:white;
   border-top:5px solid #0d47a1;
+  min-width:1600px;
 }
 
 /* Labels */
