@@ -1059,6 +1059,77 @@ function calcTailBearing(){
 }
 // table gear box service factor 
 
+// conveyor profile 
+function generateConveyor(){
+
+  // INPUT VALUES
+  let L = parseFloat(document.getElementById("L").value);
+  let H = parseFloat(document.getElementById("H").value);
+  let angle = parseFloat(document.getElementById("cs").value);
+
+  // SVG SCALE
+  let scaleX = 8;
+  let scaleY = 10;
+
+  // START POINT
+  let x1 = 150;
+  let y1 = 500;
+
+  // END POINT
+  let x2 = x1 + (L * scaleX);
+  let y2 = y1 - (H * scaleY);
+
+  // LIMIT CONTROL
+  if(x2 > 1400){
+    x2 = 1400;
+  }
+
+  if(y2 < 120){
+    y2 = 120;
+  }
+
+  // BELT LINE
+  document.getElementById("beltLine")
+    .setAttribute(
+      "points",
+      `${x1},${y1}
+       ${x2},${y2}`
+    );
+
+  // RETURN BELT
+  document.getElementById("returnLine")
+    .setAttribute(
+      "points",
+      `${x2},${y2+40}
+       ${x1},${y1+40}`
+    );
+
+  // HEAD PULLEY
+  document.getElementById("headPulley")
+    .setAttribute("cx", x2);
+
+  document.getElementById("headPulley")
+    .setAttribute("cy", y2);
+
+  // TAIL PULLEY
+  document.getElementById("tailPulley")
+    .setAttribute("cx", x1);
+
+  document.getElementById("tailPulley")
+    .setAttribute("cy", y1);
+
+  // LENGTH TEXT
+  document.getElementById("lengthText")
+    .innerHTML =
+    `Conveyor Length = ${L} m`;
+
+  // HEIGHT TEXT
+  document.getElementById("heightText")
+    .innerHTML =
+    `Lift = ${H} m`;
+
+}
+
 window.calculate = calculate;
 window.calcIdler = calcIdler;
 window.calcMainRes = calcMainRes;
@@ -1088,6 +1159,6 @@ window.saveProject = saveProject;
 window.loadProject = loadProject;
 window.loadProjectList = loadProjectList;
 window.logout = logout;
-
+window.generateConveyor = generateConveyor;
 
 
