@@ -434,9 +434,15 @@
      =============================================-->
 <div id="conv" class="tabcontent">
 
-<div class="wrapper">
+	<button class="btn"
+onclick="generateConveyor()"
+style="margin:15px;">
+Generate Conveyor Layout
+</button>
+	
+<div id="layoutWrapper" class="wrapper">
 
-  SVG CODE
+  
 
 
 
@@ -445,42 +451,63 @@
   <!-- ================= GROUND ================= -->
   <line x1="0" y1="620" x2="1600" y2="620" class="ground"/>
 
-  <!-- ================= SUPPORT STRUCTURE ================= -->
-  <line x1="150" y1="500" x2="550" y2="500" class="structure"/>
-  <line x1="550" y1="500" x2="1050" y2="300" class="structure"/>
-  <line x1="1050" y1="300" x2="1350" y2="300" class="structure"/>
-
-  <!-- SUPPORT LEGS -->
-  <line x1="200" y1="500" x2="200" y2="620" class="structure"/>
-  <line x1="350" y1="500" x2="350" y2="620" class="structure"/>
-  <line x1="500" y1="500" x2="500" y2="620" class="structure"/>
-
-  <line x1="650" y1="460" x2="650" y2="620" class="structure"/>
-  <line x1="800" y1="400" x2="800" y2="620" class="structure"/>
-  <line x1="950" y1="340" x2="950" y2="620" class="structure"/>
-
-  <line x1="1100" y1="300" x2="1100" y2="620" class="structure"/>
-  <line x1="1250" y1="300" x2="1250" y2="620" class="structure"/>
 
   <!-- ================= HEAD PULLEY ================= -->
 <circle id="headPulley" cx="1350" cy="300" r="40" class="pulley"/>
-  <text x="1300" y="240" class="label">
+ <text id="headPulleyText"
+x="1300"
+y="240"
+class="label">
 HEAD PULLEY
 </text>
 
   <!-- ================= TAIL PULLEY ================= -->
   <circle id="tailPulley" cx="150" cy="500" r="40" class="pulley"/>
-  <text x="90" y="440" class="label">TAIL PULLEY</text>
-
+ <text id="tailPulleyText"
+x="90"
+y="440"
+class="label">
+TAIL PULLEY
+</text>
   <!-- ================= TAKE UP ================= -->
-  <circle cx="500" cy="500" r="30" class="pulley"/>
-  <line x1="500" y1="530" x2="500" y2="590" class="structure"/>
-  <rect x="470" y="590" width="60" height="25" fill="#78909c"/>
-  <text x="440" y="560" class="label">TAKE-UP</text>
+  <circle id="takeupPulley"
+cx="500"
+cy="500"
+r="30"
+class="pulley"/>
+ <line id="takeupSupport"
+x1="500"
+y1="530"
+x2="500"
+y2="590"
+class="structure"/>
+  <rect id="takeupBox"
+x="470"
+y="590"
+width="60"
+height="25"
+fill="#78909c"/>
+ <text id="takeupText"
+x="440"
+y="560"
+class="label">
+TAKE-UP
+</text>
 
   <!-- ================= DRIVE UNIT ================= -->
-  <rect x="1290" y="180" width="120" height="60" fill="#546e7a"/>
-  <text x="1310" y="215" fill="white" font-size="15">
+  <rect id="driveUnit"
+x="1290"
+y="180"
+width="120"
+height="60"
+fill="#546e7a"/>
+
+	
+	<text id="driveText"
+x="1310"
+y="215"
+fill="white"
+font-size="15">
     DRIVE UNIT
   </text>
 
@@ -492,61 +519,69 @@ HEAD PULLEY
 
   <!-- ================= IDLERS ================= -->
 
-  <!-- Horizontal -->
-  <line x1="220" y1="495" x2="260" y2="495" class="idler"/>
-  <line x1="320" y1="495" x2="360" y2="495" class="idler"/>
-  <line x1="420" y1="495" x2="460" y2="495" class="idler"/>
+<!-- DYNAMIC STRUCTURE -->
+<g id="structureGroup"></g>
 
-  <!-- Inclined -->
-  <line x1="650" y1="455" x2="690" y2="440" class="idler"/>
-  <line x1="780" y1="405" x2="820" y2="390" class="idler"/>
-  <line x1="910" y1="355" x2="950" y2="340" class="idler"/>
+<!-- DYNAMIC SUPPORTS -->
+<g id="supportGroup"></g>
 
-  <!-- Head -->
-  <line x1="1120" y1="295" x2="1160" y2="295" class="idler"/>
-  <line x1="1220" y1="295" x2="1260" y2="295" class="idler"/>
+<!-- DYNAMIC IDLERS -->
+<g id="idlerGroup"></g>
 
   <!-- ================= LOADING CHUTE ================= -->
-  <polygon
-    points="
-      240,350
-      320,350
-      290,500
-    "
-    class="chute"
-  />
+ <polygon id="loadingChute"
+points="
+240,350
+320,350
+290,500"
+class="chute"/>
 
-  <text x="210" y="330" class="label">
+  <text id="loadingText"
+x="210"
+y="330"
+class="label">
     LOADING CHUTE
   </text>
 
   <!-- ================= DISCHARGE CHUTE ================= -->
-  <polygon
-    points="
-      1360,340
-      1460,400
-      1420,500
-      1360,430
-    "
-    class="chute"
-  />
+ <polygon id="dischargeChute"
+points="
+1360,340
+1460,400
+1420,500
+1360,430"
+class="chute"/>
 
-  <text x="1380" y="530" class="label">
+ <text id="dischargeText"
+x="1380"
+y="530"
+class="label">
     DISCHARGE
   </text>
 
   <!-- ================= TRANSFER TOWER ================= -->
-  <rect x="1000" y="120" width="90" height="180" class="tower"/>
-
-  <text x="980" y="100" class="label">
+<rect id="transferTower"
+x="1000"
+y="120"
+width="90"
+height="180"
+class="tower"/>
+ <text id="towerText"
+x="980"
+y="100"
+class="label">
     TRANSFER TOWER
   </text>
 
   <!-- ================= DIMENSIONS ================= -->
 
   <!-- Length -->
-  <line x1="150" y1="650" x2="1350" y2="650" class="dimension"/>
-
+ <line id="lengthDim"
+x1="150"
+y1="650"
+x2="1350"
+y2="650"
+class="dimension"/>
   <line x1="150" y1="640" x2="150" y2="660" class="dimension"/>
   <line x1="1350" y1="640" x2="1350" y2="660" class="dimension"/>
 
@@ -558,7 +593,12 @@ HEAD PULLEY
     </text>
 
   <!-- Height -->
-  <line x1="1450" y1="300" x2="1450" y2="500" class="dimension"/>
+  <line id="heightDim"
+x1="1450"
+y1="300"
+x2="1450"
+y2="500"
+class="dimension"/>
 
   <line x1="1440" y1="300" x2="1460" y2="300" class="dimension"/>
   <line x1="1440" y1="500" x2="1460" y2="500" class="dimension"/>
@@ -575,11 +615,7 @@ HEAD PULLEY
 </div>
 </div>
 
-<button class="btn"
-onclick="generateConveyor()"
-style="margin:15px;">
-Generate Conveyor Layout
-</button>
+
 
 
 
