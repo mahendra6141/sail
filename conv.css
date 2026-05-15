@@ -421,7 +421,12 @@ svg{
 /* Structure */
 .structure{
   stroke:#616161;
-  stroke-width:3;
+  stroke-width:5;
+}
+
+.idler{
+  stroke:#455a64;
+  stroke-width:5;
 }
 
 /* Pulley */
@@ -431,11 +436,7 @@ svg{
   stroke-width:3;
 }
 
-/* Idlers */
-.idler{
-  stroke:#455a64;
-  stroke-width:3;
-}
+
 
 /* Chute */
 .chute{
