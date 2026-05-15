@@ -385,4 +385,82 @@ input.result {
     page-break-after: always;
   }
 
+}  
+/* conveyor profile*/
+.wrapper{
+  width:100%;
+  overflow:auto;
 }
+
+svg{
+  background:white;
+  border-top:5px solid #0d47a1;
+}
+
+/* Labels */
+.label{
+  font-size:14px;
+  fill:#111;
+  font-weight:bold;
+}
+
+/* Conveyor Belt */
+.belt{
+  stroke:#1565c0;
+  stroke-width:8;
+  fill:none;
+}
+
+/* Return Belt */
+.returnbelt{
+  stroke:#90caf9;
+  stroke-width:5;
+  fill:none;
+}
+
+/* Structure */
+.structure{
+  stroke:#616161;
+  stroke-width:3;
+}
+
+/* Pulley */
+.pulley{
+  fill:#b0bec5;
+  stroke:#263238;
+  stroke-width:3;
+}
+
+/* Idlers */
+.idler{
+  stroke:#455a64;
+  stroke-width:3;
+}
+
+/* Chute */
+.chute{
+  fill:#8d6e63;
+  stroke:#4e342e;
+  stroke-width:2;
+}
+
+/* Tower */
+.tower{
+  fill:#cfd8dc;
+  stroke:#455a64;
+  stroke-width:3;
+}
+
+/* Ground */
+.ground{
+  stroke:#2e7d32;
+  stroke-width:4;
+}
+
+/* Dimension */
+.dimension{
+  stroke:#e53935;
+  stroke-width:2;
+  stroke-dasharray:6;
+}
+
