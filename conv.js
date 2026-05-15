@@ -1092,9 +1092,13 @@ function generateConveyor(){
 
   // ================= END POINT =================
 
-  let x2 = x1 + (L * scaleX);
-  let y2 = y1 - (H * scaleY);
+  let rad = angle * Math.PI / 180;
 
+let x2 =
+x1 + (L * Math.cos(rad) * scaleX);
+
+let y2 =
+y1 - (L * Math.sin(rad) * scaleY);
   // ================= LIMIT CONTROL =================
 
   if(x2 > 1350){
@@ -1322,7 +1326,11 @@ function generateConveyor(){
 
   supportGroup.innerHTML = "";
 
-  let supports = 8;
+ let supports = Math.floor(L / 25);
+
+if(supports < 4){
+  supports = 4;
+}
 
   for(let i = 0; i <= supports; i++){
 
@@ -1357,7 +1365,11 @@ function generateConveyor(){
 
   idlerGroup.innerHTML = "";
 
-  let idlerCount = 14;
+ let idlerCount = Math.floor(L / 12);
+
+if(idlerCount < 8){
+  idlerCount = 8;
+}
 
   for(let i = 0; i <= idlerCount; i++){
 
@@ -1371,12 +1383,17 @@ function generateConveyor(){
         "line"
       );
 
-    idler.setAttribute("x1", px - 18);
-    idler.setAttribute("y1", py);
+   let dx =
+18 * Math.cos((angle * Math.PI)/180);
 
-    idler.setAttribute("x2", px + 18);
-    idler.setAttribute("y2", py);
+let dy =
+18 * Math.sin((angle * Math.PI)/180);
 
+idler.setAttribute("x1", px - dx);
+idler.setAttribute("y1", py - dy);
+
+idler.setAttribute("x2", px + dx);
+idler.setAttribute("y2", py + dy);
     idler.setAttribute("class", "idler");
 
     idlerGroup.appendChild(idler);
@@ -1429,6 +1446,11 @@ function generateConveyor(){
   document.getElementById("heightText")
     .innerHTML =
     `Lift = ${H} m`;
+
+}
+window.onload = function(){
+
+  generateConveyor();
 
 }
 
