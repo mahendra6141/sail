@@ -35,7 +35,13 @@ async function protectPage() {
   }
 
 }
+async function logout() {
 
+  await supabase.auth.signOut();
+
+  window.location.href = "login.html";
+
+}  
 supabase.auth.onAuthStateChange((event) => {
 
   if(event === "SIGNED_OUT"){
@@ -1081,7 +1087,7 @@ window.printFullReport = printFullReport;
 window.saveProject = saveProject;
 window.loadProject = loadProject;
 window.loadProjectList = loadProjectList;
-
+window.logout = logout;
 
 
 
