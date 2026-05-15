@@ -1,5 +1,64 @@
 import supabase from "./supabase.js";
 
+
+async function login() {
+
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+    alert("Login failed");
+    return;
+  }
+
+  window.location.href = "dashboard.html";
+}
+
+async function logout() {
+  await supabase.auth.signOut();
+  window.location.href = "login.html";
+}
+
+async function protectPage() {
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if(!user){
+    window.location.href = "login.html";
+    return;
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  window.userRole = profile.role;
+
+  // UI control
+  if(profile.role === "viewer"){
+    document.getElementById("saveBtn").style.display = "none";
+  }
+
+  if(profile.role === "engineer"){
+    document.getElementById("deleteBtn").style.display = "none";
+  }
+}
+
+
+
+
+
+
+
+
+
 function openTab(evt, tabName) {
 
   let tabcontent = document.getElementsByClassName("tabcontent");
@@ -112,30 +171,30 @@ function printFullReport() {
 // 🔹 Save Project
 async function saveProject() {
 
-  let id = document.getElementById("projectId").value.trim();
+  const { data: userData } = await supabase.auth.getUser();
+  const user = userData.user;
 
-  let plant = document.getElementById("plant").value.trim();
-  let area  = document.getElementById("area").value.trim();
+  let id = document.getElementById("projectId").value.trim();
 
   if(!id){
     alert("Enter Project ID!");
     return;
   }
 
+  let plant = document.getElementById("plant").value.trim();
+  let area  = document.getElementById("area").value.trim();
+
   let data = {};
 
-  // 🔥 sab fields save karo
-  document
-    .querySelectorAll("input, select, textarea")
+  // 🔥 FULL INPUT CAPTURE (checkbox + select + textarea safe)
+  document.querySelectorAll("input, select, textarea")
     .forEach(el => {
 
       if(el.id){
 
-        // checkbox support
         if(el.type === "checkbox"){
           data[el.id] = el.checked;
         }
-
         else{
           data[el.id] = el.value;
         }
@@ -144,39 +203,26 @@ async function saveProject() {
 
     });
 
-  // 🔥 UPSERT = insert + update
   const { error } = await supabase
     .from("calculations")
-    .upsert(
-      [
-        {
-          project_name: id,
-          plant: plant,
-          area: area,
-          input_data: data
-        }
-      ],
-      {
-        onConflict: "project_name,plant,area"
-      }
-    );
+    .upsert({
+      project_name: id,
+      plant: plant,
+      area: area,
+      input_data: data,
+      created_by: user.id
+    }, {
+      onConflict: "project_name,plant,area"
+    });
 
   if(error){
-
     console.log(error);
-
-    alert("Save Failed");
-
+    alert("Save failed");
   } else {
-
-    alert("Project Saved / Updated!");
-
+    alert("Saved successfully!");
     loadProjectList();
-
   }
-
 }
-
 
 // 🔹 Load Project List
 async function loadProjectList(){
