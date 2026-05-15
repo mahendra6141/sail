@@ -1060,70 +1060,372 @@ function calcTailBearing(){
 // table gear box service factor 
 
 // conveyor profile 
+// ============================================
+// ========== CONVEYOR PROFILE ================
+// ============================================
+
 function generateConveyor(){
 
-  // INPUT VALUES
-  let L = parseFloat(document.getElementById("L").value);
-  let H = parseFloat(document.getElementById("H").value);
-  let angle = parseFloat(document.getElementById("cs").value);
+  // ================= INPUT VALUES =================
 
-  // SVG SCALE
-  let scaleX = 8;
-  let scaleY = 10;
+  let L = parseFloat(
+    document.getElementById("L").value
+  ) || 100;
 
-  // START POINT
+  let H = parseFloat(
+    document.getElementById("H").value
+  ) || 10;
+
+  let angle = parseFloat(
+    document.getElementById("cs").value
+  ) || 0;
+
+  // ================= SVG SCALE =================
+
+  let scaleX = 3.5;
+  let scaleY = 8;
+
+  // ================= START POINT =================
+
   let x1 = 150;
   let y1 = 500;
 
-  // END POINT
+  // ================= END POINT =================
+
   let x2 = x1 + (L * scaleX);
   let y2 = y1 - (H * scaleY);
 
-  // LIMIT CONTROL
-  if(x2 > 1400){
-    x2 = 1400;
+  // ================= LIMIT CONTROL =================
+
+  if(x2 > 1350){
+    x2 = 1350;
   }
 
   if(y2 < 120){
     y2 = 120;
   }
 
+  // ============================================
   // BELT LINE
+  // ============================================
+
   document.getElementById("beltLine")
     .setAttribute(
       "points",
-      `${x1},${y1}
-       ${x2},${y2}`
+      `
+      ${x1},${y1}
+      ${x2},${y2}
+      `
     );
 
+  // ============================================
   // RETURN BELT
+  // ============================================
+
   document.getElementById("returnLine")
     .setAttribute(
       "points",
-      `${x2},${y2+40}
-       ${x1},${y1+40}`
+      `
+      ${x2},${y2 + 40}
+      ${x1},${y1 + 40}
+      `
     );
 
+  // ============================================
   // HEAD PULLEY
+  // ============================================
+
   document.getElementById("headPulley")
     .setAttribute("cx", x2);
 
   document.getElementById("headPulley")
     .setAttribute("cy", y2);
 
+  // HEAD TEXT
+
+  document.getElementById("headPulleyText")
+    .setAttribute("x", x2 - 60);
+
+  document.getElementById("headPulleyText")
+    .setAttribute("y", y2 - 60);
+
+  // ============================================
   // TAIL PULLEY
+  // ============================================
+
   document.getElementById("tailPulley")
     .setAttribute("cx", x1);
 
   document.getElementById("tailPulley")
     .setAttribute("cy", y1);
 
+  // TAIL TEXT
+
+  document.getElementById("tailPulleyText")
+    .setAttribute("x", x1 - 70);
+
+  document.getElementById("tailPulleyText")
+    .setAttribute("y", y1 - 60);
+
+  // ============================================
+  // TAKE-UP POSITION
+  // ============================================
+
+  let takeupX = x1 + ((x2 - x1) * 0.35);
+  let takeupY = y1 + ((y2 - y1) * 0.35);
+
+  document.getElementById("takeupPulley")
+    .setAttribute("cx", takeupX);
+
+  document.getElementById("takeupPulley")
+    .setAttribute("cy", takeupY);
+
+  // TAKEUP SUPPORT
+
+  document.getElementById("takeupSupport")
+    .setAttribute("x1", takeupX);
+
+  document.getElementById("takeupSupport")
+    .setAttribute("y1", takeupY + 30);
+
+  document.getElementById("takeupSupport")
+    .setAttribute("x2", takeupX);
+
+  document.getElementById("takeupSupport")
+    .setAttribute("y2", 620);
+
+  // TAKEUP BOX
+
+  document.getElementById("takeupBox")
+    .setAttribute("x", takeupX - 30);
+
+  document.getElementById("takeupBox")
+    .setAttribute("y", 620);
+
+  // TAKEUP TEXT
+
+  document.getElementById("takeupText")
+    .setAttribute("x", takeupX - 50);
+
+  document.getElementById("takeupText")
+    .setAttribute("y", takeupY - 40);
+
+  // ============================================
+  // DRIVE UNIT
+  // ============================================
+
+  document.getElementById("driveUnit")
+    .setAttribute("x", x2 - 60);
+
+  document.getElementById("driveUnit")
+    .setAttribute("y", y2 - 120);
+
+  document.getElementById("driveText")
+    .setAttribute("x", x2 - 40);
+
+  document.getElementById("driveText")
+    .setAttribute("y", y2 - 85);
+
+  // ============================================
+  // TRANSFER TOWER
+  // ============================================
+
+  document.getElementById("transferTower")
+    .setAttribute("x", x2 - 250);
+
+  document.getElementById("transferTower")
+    .setAttribute("y", y2 - 180);
+
+  document.getElementById("transferTower")
+    .setAttribute("height", 180 + (500 - y2));
+
+  // TOWER TEXT
+
+  document.getElementById("towerText")
+    .setAttribute("x", x2 - 270);
+
+  document.getElementById("towerText")
+    .setAttribute("y", y2 - 200);
+
+  // ============================================
+  // LOADING CHUTE
+  // ============================================
+
+  let loadX = x1 + 120;
+
+  let loadingPoints = `
+    ${loadX},${y1 - 150}
+    ${loadX + 80},${y1 - 150}
+    ${loadX + 40},${y1}
+  `;
+
+  document.getElementById("loadingChute")
+    .setAttribute("points", loadingPoints);
+
+  document.getElementById("loadingText")
+    .setAttribute("x", loadX - 20);
+
+  document.getElementById("loadingText")
+    .setAttribute("y", y1 - 170);
+
+  // ============================================
+  // DISCHARGE CHUTE
+  // ============================================
+
+  let dischargePoints = `
+    ${x2 + 10},${y2 + 40}
+    ${x2 + 100},${y2 + 100}
+    ${x2 + 60},${y2 + 180}
+    ${x2},${y2 + 120}
+  `;
+
+  document.getElementById("dischargeChute")
+    .setAttribute("points", dischargePoints);
+
+  document.getElementById("dischargeText")
+    .setAttribute("x", x2 + 30);
+
+  document.getElementById("dischargeText")
+    .setAttribute("y", y2 + 220);
+
+  // ============================================
+  // DYNAMIC STRUCTURE
+  // ============================================
+
+  let structureGroup =
+    document.getElementById("structureGroup");
+
+  structureGroup.innerHTML = "";
+
+  let structureLine =
+    document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "line"
+    );
+
+  structureLine.setAttribute("x1", x1);
+  structureLine.setAttribute("y1", y1);
+
+  structureLine.setAttribute("x2", x2);
+  structureLine.setAttribute("y2", y2);
+
+  structureLine.setAttribute("class", "structure");
+
+  structureGroup.appendChild(structureLine);
+
+  // ============================================
+  // SUPPORTS
+  // ============================================
+
+  let supportGroup =
+    document.getElementById("supportGroup");
+
+  supportGroup.innerHTML = "";
+
+  let supports = 8;
+
+  for(let i = 0; i <= supports; i++){
+
+    let px = x1 + ((x2 - x1) / supports) * i;
+
+    let py = y1 + ((y2 - y1) / supports) * i;
+
+    let support =
+      document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line"
+      );
+
+    support.setAttribute("x1", px);
+    support.setAttribute("y1", py);
+
+    support.setAttribute("x2", px);
+    support.setAttribute("y2", 620);
+
+    support.setAttribute("class", "structure");
+
+    supportGroup.appendChild(support);
+
+  }
+
+  // ============================================
+  // IDLERS
+  // ============================================
+
+  let idlerGroup =
+    document.getElementById("idlerGroup");
+
+  idlerGroup.innerHTML = "";
+
+  let idlerCount = 14;
+
+  for(let i = 0; i <= idlerCount; i++){
+
+    let px = x1 + ((x2 - x1) / idlerCount) * i;
+
+    let py = y1 + ((y2 - y1) / idlerCount) * i;
+
+    let idler =
+      document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line"
+      );
+
+    idler.setAttribute("x1", px - 18);
+    idler.setAttribute("y1", py);
+
+    idler.setAttribute("x2", px + 18);
+    idler.setAttribute("y2", py);
+
+    idler.setAttribute("class", "idler");
+
+    idlerGroup.appendChild(idler);
+
+  }
+
+  // ============================================
+  // LENGTH DIMENSION
+  // ============================================
+
+  document.getElementById("lengthDim")
+    .setAttribute("x1", x1);
+
+  document.getElementById("lengthDim")
+    .setAttribute("x2", x2);
+
   // LENGTH TEXT
+
+  document.getElementById("lengthText")
+    .setAttribute("x", (x1 + x2)/2 - 80);
+
   document.getElementById("lengthText")
     .innerHTML =
     `Conveyor Length = ${L} m`;
 
+  // ============================================
+  // HEIGHT DIMENSION
+  // ============================================
+
+  document.getElementById("heightDim")
+    .setAttribute("x1", x2 + 120);
+
+  document.getElementById("heightDim")
+    .setAttribute("x2", x2 + 120);
+
+  document.getElementById("heightDim")
+    .setAttribute("y1", y2);
+
+  document.getElementById("heightDim")
+    .setAttribute("y2", y1);
+
   // HEIGHT TEXT
+
+  document.getElementById("heightText")
+    .setAttribute("x", x2 + 140);
+
+  document.getElementById("heightText")
+    .setAttribute("y", (y1 + y2)/2);
+
   document.getElementById("heightText")
     .innerHTML =
     `Lift = ${H} m`;
