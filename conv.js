@@ -2,9 +2,7 @@ import supabase from "./supabase.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
-  if(window.location.pathname.includes("dashboard")){
-    await protectPage();
-  }
+  await protectPage();
 
 });
 
