@@ -1,5 +1,9 @@
 import supabase from "./supabase.js";
 
+window.addEventListener("DOMContentLoaded", () => {
+  protectPage();
+});
+
 
 async function login() {
 
@@ -41,15 +45,38 @@ async function protectPage() {
 
   window.userRole = profile.role;
 
-  // UI control
+  // UI control (basic)
   if(profile.role === "viewer"){
-    document.getElementById("saveBtn").style.display = "none";
+    document.querySelectorAll(".editable").forEach(el => {
+      el.style.display = "none";
+    });
   }
 
   if(profile.role === "engineer"){
-    document.getElementById("deleteBtn").style.display = "none";
+    document.querySelectorAll(".admin-only").forEach(el => {
+      el.style.display = "none";
+    });
   }
+
 }
+
+async function checkSession() {
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if(user){
+    window.location.href = "dashboard.html";
+  }
+
+}
+
+supabase.auth.onAuthStateChange((event, session) => {
+
+  if(event === "SIGNED_OUT"){
+    window.location.href = "login.html";
+  }
+
+});
 
 
 
