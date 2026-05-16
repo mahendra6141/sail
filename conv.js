@@ -1588,33 +1588,7 @@ function generateConveyor(){
     `Lift = ${H} m`;
 
 }
-/* ========================================= */
-/* BELT MOVEMENT */
-/* ========================================= */
 
-@keyframes moveBelt{
-
-  from{
-    stroke-dashoffset:0;
-  }
-
-  to{
-    stroke-dashoffset:-37;
-  }
-
-}
-
-@keyframes returnMove{
-
-  from{
-    stroke-dashoffset:0;
-  }
-
-  to{
-    stroke-dashoffset:37;
-  }
-
-}
 // ============================================
 // MATERIAL FLOW ANIMATION
 // ============================================
