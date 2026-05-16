@@ -1059,14 +1059,16 @@ function calcTailBearing(){
 }
 // table gear box service factor 
 
-// conveyor profile 
+// conveyor profile
 // ============================================
 // ========== CONVEYOR PROFILE ================
 // ============================================
 
 function generateConveyor(){
 
-  // ================= INPUT VALUES =================
+  // ============================================
+  // INPUT VALUES
+  // ============================================
 
   let L = parseFloat(
     document.getElementById("L").value
@@ -1080,55 +1082,64 @@ function generateConveyor(){
     document.getElementById("cs").value
   ) || 0;
 
-  // ================= SVG SCALE =================
+  // ============================================
+  // SVG SCALE
+  // ============================================
 
   let scaleX = 3.5;
   let scaleY = 8;
 
-  // ================= START POINT =================
+  // ============================================
+  // START POINT
+  // ============================================
 
   let x1 = 150;
   let y1 = 500;
 
-  // ================= END POINT =================
-// ================= 3 PART LENGTHS =================
+  // ============================================
+  // 3 PART LENGTHS
+  // ============================================
 
-let L1 = L * 0.20;   // Start Horizontal
-let L2 = L * 0.60;   // Inclined Part
-let L3 = L * 0.20;   // End Horizontal
+  let L1 = L * 0.20;   // Start Horizontal
+  let L2 = L * 0.60;   // Inclined Part
+  let L3 = L * 0.20;   // End Horizontal
+
   let rad = angle * Math.PI / 180;
 
-// ============================================
-// POINT A → START HORIZONTAL END
-// ============================================
+  // ============================================
+  // POINT A → START HORIZONTAL END
+  // ============================================
 
-let xA = x1 + (L1 * scaleX);
-let yA = y1;
+  let xA = x1 + (L1 * scaleX);
+  let yA = y1;
 
-// ============================================
-// POINT B → INCLINED END
-// ============================================
+  // ============================================
+  // POINT B → INCLINED END
+  // ============================================
 
-let xB =
-xA + (L2 * Math.cos(rad) * scaleX);
+  let xB =
+    xA + (L2 * Math.cos(rad) * scaleX);
 
-let yB =
-yA - (L2 * Math.sin(rad) * scaleY);
+  let yB =
+    yA - (L2 * Math.sin(rad) * scaleY);
 
-// ============================================
-// POINT C → FINAL HORIZONTAL END
-// ============================================
+  // ============================================
+  // POINT C → FINAL HORIZONTAL END
+  // ============================================
 
-let xC = xB + (L3 * scaleX);
-let yC = yB;
-  // ================= LIMIT CONTROL =================
+  let xC = xB + (L3 * scaleX);
+  let yC = yB;
+
+  // ============================================
+  // LIMIT CONTROL
+  // ============================================
 
   if(xC > 1350){
-  xC = 1350;
-}
+    xC = 1350;
+  }
 
-  if(y2 < 120){
-    y2 = 120;
+  if(yC < 120){
+    yC = 120;
   }
 
   // ============================================
@@ -1139,10 +1150,10 @@ let yC = yB;
     .setAttribute(
       "points",
       `
-     ${x1},${y1}
-${xA},${yA}
-${xB},${yB}
-${xC},${yC}
+      ${x1},${y1}
+      ${xA},${yA}
+      ${xB},${yB}
+      ${xC},${yC}
       `
     );
 
@@ -1154,10 +1165,25 @@ ${xC},${yC}
     .setAttribute(
       "points",
       `
-     ${xC},${yC + 40}
-${xB},${yB + 40}
-${xA},${yA + 40}
-${x1},${y1 + 40}
+      ${xC},${yC + 40}
+      ${xB},${yB + 40}
+      ${xA},${yA + 40}
+      ${x1},${y1 + 40}
+      `
+    );
+
+  // ============================================
+  // WALKWAY
+  // ============================================
+
+  document.getElementById("walkway")
+    .setAttribute(
+      "points",
+      `
+      ${x1},${y1 - 35}
+      ${xA},${yA - 35}
+      ${xB},${yB - 35}
+      ${xC},${yC - 35}
       `
     );
 
@@ -1166,18 +1192,18 @@ ${x1},${y1 + 40}
   // ============================================
 
   document.getElementById("headPulley")
-    .setAttribute("cx", x2);
+    .setAttribute("cx", xC);
 
   document.getElementById("headPulley")
-    .setAttribute("cy", y2);
+    .setAttribute("cy", yC);
 
   // HEAD TEXT
 
   document.getElementById("headPulleyText")
-    .setAttribute("x", x2 - 60);
+    .setAttribute("x", xC - 60);
 
   document.getElementById("headPulleyText")
-    .setAttribute("y", y2 - 60);
+    .setAttribute("y", yC - 60);
 
   // ============================================
   // TAIL PULLEY
@@ -1201,8 +1227,11 @@ ${x1},${y1 + 40}
   // TAKE-UP POSITION
   // ============================================
 
-  let takeupX = x1 + ((x2 - x1) * 0.35);
-  let takeupY = y1 + ((y2 - y1) * 0.35);
+  let takeupX =
+    x1 + ((xB - x1) * 0.35);
+
+  let takeupY =
+    y1 + ((yB - y1) * 0.35);
 
   document.getElementById("takeupPulley")
     .setAttribute("cx", takeupX);
@@ -1245,37 +1274,37 @@ ${x1},${y1 + 40}
   // ============================================
 
   document.getElementById("driveUnit")
-    .setAttribute("x", x2 - 60);
+    .setAttribute("x", xC - 60);
 
   document.getElementById("driveUnit")
-    .setAttribute("y", y2 - 120);
+    .setAttribute("y", yC - 120);
 
   document.getElementById("driveText")
-    .setAttribute("x", x2 - 40);
+    .setAttribute("x", xC - 40);
 
   document.getElementById("driveText")
-    .setAttribute("y", y2 - 85);
+    .setAttribute("y", yC - 85);
 
   // ============================================
   // TRANSFER TOWER
   // ============================================
 
   document.getElementById("transferTower")
-    .setAttribute("x", x2 - 250);
+    .setAttribute("x", xB - 80);
 
   document.getElementById("transferTower")
-    .setAttribute("y", y2 - 180);
+    .setAttribute("y", yB - 180);
 
   document.getElementById("transferTower")
-    .setAttribute("height", 180 + (500 - y2));
+    .setAttribute("height", 180 + (500 - yB));
 
   // TOWER TEXT
 
   document.getElementById("towerText")
-    .setAttribute("x", x2 - 270);
+    .setAttribute("x", xB - 100);
 
   document.getElementById("towerText")
-    .setAttribute("y", y2 - 200);
+    .setAttribute("y", yB - 200);
 
   // ============================================
   // LOADING CHUTE
@@ -1303,20 +1332,20 @@ ${x1},${y1 + 40}
   // ============================================
 
   let dischargePoints = `
-    ${x2 + 10},${y2 + 40}
-    ${x2 + 100},${y2 + 100}
-    ${x2 + 60},${y2 + 180}
-    ${x2},${y2 + 120}
+    ${xC + 10},${yC + 40}
+    ${xC + 100},${yC + 100}
+    ${xC + 60},${yC + 180}
+    ${xC},${yC + 120}
   `;
 
   document.getElementById("dischargeChute")
     .setAttribute("points", dischargePoints);
 
   document.getElementById("dischargeText")
-    .setAttribute("x", x2 + 30);
+    .setAttribute("x", xC + 30);
 
   document.getElementById("dischargeText")
-    .setAttribute("y", y2 + 220);
+    .setAttribute("y", yC + 220);
 
   // ============================================
   // DYNAMIC STRUCTURE
@@ -1330,18 +1359,27 @@ ${x1},${y1 + 40}
   let structureLine =
     document.createElementNS(
       "http://www.w3.org/2000/svg",
-      "line"
+      "polyline"
     );
 
-  structureLine.setAttribute("x1", x1);
-  structureLine.setAttribute("y1", y1);
+  structureLine.setAttribute(
+    "points",
+    `
+    ${x1},${y1}
+    ${xA},${yA}
+    ${xB},${yB}
+    ${xC},${yC}
+    `
+  );
 
-  structureLine.setAttribute("x2", x2);
-  structureLine.setAttribute("y2", y2);
+  structureLine.setAttribute(
+    "class",
+    "structure"
+  );
 
-  structureLine.setAttribute("class", "structure");
-
-  structureGroup.appendChild(structureLine);
+  structureGroup.appendChild(
+    structureLine
+  );
 
   // ============================================
   // SUPPORTS
@@ -1352,42 +1390,62 @@ ${x1},${y1 + 40}
 
   supportGroup.innerHTML = "";
 
- let supports = Math.floor(L / 25);
+  let supports =
+    Math.floor(L / 25);
 
-if(supports < 4){
-  supports = 4;
-}
+  if(supports < 4){
+    supports = 4;
+  }
 
   for(let i = 0; i <= supports; i++){
 
-    let px = x1 + ((x2 - x1) / supports) * i;
+    let px =
+      x1 + ((xC - x1) / supports) * i;
 
-    let py = y1 + ((y2 - y1) / supports) * i;
+    let py =
+      y1 + ((yC - y1) / supports) * i;
 
-    let brace =
-document.createElementNS(
-"http://www.w3.org/2000/svg",
-"line"
-);
+    // SUPPORT
 
-brace.setAttribute("x1", px);
-brace.setAttribute("y1", py);
-
-brace.setAttribute("x2", px + 20);
-brace.setAttribute("y2", 620);
-
-brace.setAttribute("class","brace");
-
-supportGroup.appendChild(brace);
+    let support =
+      document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line"
+      );
 
     support.setAttribute("x1", px);
     support.setAttribute("y1", py);
 
     support.setAttribute("x2", px + 20);
     support.setAttribute("y2", 620);
-    support.setAttribute("class", "structure");
+
+    support.setAttribute(
+      "class",
+      "structure"
+    );
 
     supportGroup.appendChild(support);
+
+    // BRACE
+
+    let brace =
+      document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line"
+      );
+
+    brace.setAttribute("x1", px);
+    brace.setAttribute("y1", py);
+
+    brace.setAttribute("x2", px + 20);
+    brace.setAttribute("y2", 620);
+
+    brace.setAttribute(
+      "class",
+      "brace"
+    );
+
+    supportGroup.appendChild(brace);
 
   }
 
@@ -1400,79 +1458,82 @@ supportGroup.appendChild(brace);
 
   idlerGroup.innerHTML = "";
 
- let idlerCount = Math.floor(L / 12);
+  let idlerCount =
+    Math.floor(L / 12);
 
-if(idlerCount < 8){
-  idlerCount = 8;
-}
+  if(idlerCount < 8){
+    idlerCount = 8;
+  }
 
   for(let i = 0; i <= idlerCount; i++){
 
-    let px = x1 + ((x2 - x1) / idlerCount) * i;
+    let px =
+      x1 + ((xC - x1) / idlerCount) * i;
 
-    let py = y1 + ((y2 - y1) / idlerCount) * i;
+    let py =
+      y1 + ((yC - y1) / idlerCount) * i;
 
     let idler =
-document.createElementNS(
-"http://www.w3.org/2000/svg",
-"polyline"
-);
+      document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "polyline"
+      );
 
-idler.setAttribute(
-"points",
-`
-${px-15},${py+5}
-${px},${py-5}
-${px+15},${py+5}
-`
-);
+    idler.setAttribute(
+      "points",
+      `
+      ${px-15},${py+5}
+      ${px},${py-5}
+      ${px+15},${py+5}
+      `
+    );
 
-   let dx =
-18 * Math.cos((angle * Math.PI)/180);
-
-let dy =
-18 * Math.sin((angle * Math.PI)/180);
-
-idler.setAttribute("x1", px - dx);
-idler.setAttribute("y1", py - dy);
-
-idler.setAttribute("x2", px + dx);
-idler.setAttribute("y2", py + dy);
-    idler.setAttribute("class", "idler");
+    idler.setAttribute(
+      "class",
+      "idler"
+    );
 
     idlerGroup.appendChild(idler);
 
   }
-   // arrow group
-	let arrowGroup =
-document.getElementById("flowArrows");
 
-arrowGroup.innerHTML = "";
+  // ============================================
+  // FLOW ARROWS
+  // ============================================
 
-for(let i=0; i<8; i++){
+  let arrowGroup =
+    document.getElementById("flowArrows");
 
-let ax =
-x1 + ((xC-x1)/8)*i;
+  arrowGroup.innerHTML = "";
 
-let ay =
-y1 + ((yC-y1)/8)*i;
+  for(let i=0; i<8; i++){
 
-let txt =
-document.createElementNS(
-"http://www.w3.org/2000/svg",
-"text"
-);
+    let ax =
+      x1 + ((xC-x1)/8)*i;
 
-txt.setAttribute("x",ax);
-txt.setAttribute("y",ay-15);
+    let ay =
+      y1 + ((yC-y1)/8)*i;
 
-txt.setAttribute("class","arrow");
+    let txt =
+      document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "text"
+      );
 
-txt.textContent = "▶";
+    txt.setAttribute("x", ax);
+    txt.setAttribute("y", ay - 15);
 
-arrowGroup.appendChild(txt);
+    txt.setAttribute(
+      "class",
+      "arrow"
+    );
 
-}
+    txt.textContent = "▶";
+
+    arrowGroup.appendChild(txt);
+
+  }
+
   // ============================================
   // LENGTH DIMENSION
   // ============================================
@@ -1481,12 +1542,15 @@ arrowGroup.appendChild(txt);
     .setAttribute("x1", x1);
 
   document.getElementById("lengthDim")
-    .setAttribute("x2", x2);
+    .setAttribute("x2", xC);
 
   // LENGTH TEXT
 
   document.getElementById("lengthText")
-    .setAttribute("x", (x1 + x2)/2 - 80);
+    .setAttribute(
+      "x",
+      (x1 + xC)/2 - 80
+    );
 
   document.getElementById("lengthText")
     .innerHTML =
@@ -1497,13 +1561,13 @@ arrowGroup.appendChild(txt);
   // ============================================
 
   document.getElementById("heightDim")
-    .setAttribute("x1", x2 + 120);
+    .setAttribute("x1", xC + 120);
 
   document.getElementById("heightDim")
-    .setAttribute("x2", x2 + 120);
+    .setAttribute("x2", xC + 120);
 
   document.getElementById("heightDim")
-    .setAttribute("y1", y2);
+    .setAttribute("y1", yC);
 
   document.getElementById("heightDim")
     .setAttribute("y2", y1);
@@ -1511,16 +1575,24 @@ arrowGroup.appendChild(txt);
   // HEIGHT TEXT
 
   document.getElementById("heightText")
-    .setAttribute("x", x2 + 140);
+    .setAttribute("x", xC + 140);
 
   document.getElementById("heightText")
-    .setAttribute("y", (y1 + y2)/2);
+    .setAttribute(
+      "y",
+      (y1 + yC)/2
+    );
 
   document.getElementById("heightText")
     .innerHTML =
     `Lift = ${H} m`;
 
 }
+
+// ============================================
+// AUTO LOAD
+// ============================================
+
 window.onload = function(){
 
   generateConveyor();
