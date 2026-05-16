@@ -531,4 +531,31 @@ svg{
   stroke-width:3;
   fill:none;
 }
+/* ========================================= */
+/* BELT MOVEMENT */
+/* ========================================= */
+
+@keyframes moveBelt{
+
+  from{
+    stroke-dashoffset:0;
+  }
+
+  to{
+    stroke-dashoffset:-37;
+  }
+
+}
+
+@keyframes returnMove{
+
+  from{
+    stroke-dashoffset:0;
+  }
+
+  to{
+    stroke-dashoffset:37;
+  }
+
+}
 
