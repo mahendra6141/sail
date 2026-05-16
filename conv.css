@@ -466,4 +466,12 @@ svg{
   stroke-width:2;
   stroke-dasharray:6;
 }
+.arrow{
+  fill:#1565c0;
+  font-size:18px;
+}
+.brace{
+  stroke:#546e7a;
+  stroke-width:2;
+}
 
