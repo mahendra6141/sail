@@ -1091,19 +1091,41 @@ function generateConveyor(){
   let y1 = 500;
 
   // ================= END POINT =================
+// ================= 3 PART LENGTHS =================
 
+let L1 = L * 0.20;   // Start Horizontal
+let L2 = L * 0.60;   // Inclined Part
+let L3 = L * 0.20;   // End Horizontal
   let rad = angle * Math.PI / 180;
 
-let x2 =
-x1 + (L * Math.cos(rad) * scaleX);
+// ============================================
+// POINT A → START HORIZONTAL END
+// ============================================
 
-let y2 =
-y1 - (L * Math.sin(rad) * scaleY);
+let xA = x1 + (L1 * scaleX);
+let yA = y1;
+
+// ============================================
+// POINT B → INCLINED END
+// ============================================
+
+let xB =
+xA + (L2 * Math.cos(rad) * scaleX);
+
+let yB =
+yA - (L2 * Math.sin(rad) * scaleY);
+
+// ============================================
+// POINT C → FINAL HORIZONTAL END
+// ============================================
+
+let xC = xB + (L3 * scaleX);
+let yC = yB;
   // ================= LIMIT CONTROL =================
 
-  if(x2 > 1350){
-    x2 = 1350;
-  }
+  if(xC > 1350){
+  xC = 1350;
+}
 
   if(y2 < 120){
     y2 = 120;
@@ -1117,8 +1139,10 @@ y1 - (L * Math.sin(rad) * scaleY);
     .setAttribute(
       "points",
       `
-      ${x1},${y1}
-      ${x2},${y2}
+     ${x1},${y1}
+${xA},${yA}
+${xB},${yB}
+${xC},${yC}
       `
     );
 
@@ -1130,8 +1154,10 @@ y1 - (L * Math.sin(rad) * scaleY);
     .setAttribute(
       "points",
       `
-      ${x2},${y2 + 40}
-      ${x1},${y1 + 40}
+     ${xC},${yC + 40}
+${xB},${yB + 40}
+${xA},${yA + 40}
+${x1},${y1 + 40}
       `
     );
 
@@ -1338,18 +1364,27 @@ if(supports < 4){
 
     let py = y1 + ((y2 - y1) / supports) * i;
 
-    let support =
-      document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "line"
-      );
+    let brace =
+document.createElementNS(
+"http://www.w3.org/2000/svg",
+"line"
+);
+
+brace.setAttribute("x1", px);
+brace.setAttribute("y1", py);
+
+brace.setAttribute("x2", px + 20);
+brace.setAttribute("y2", 620);
+
+brace.setAttribute("class","brace");
+
+supportGroup.appendChild(brace);
 
     support.setAttribute("x1", px);
     support.setAttribute("y1", py);
 
-    support.setAttribute("x2", px);
+    support.setAttribute("x2", px + 20);
     support.setAttribute("y2", 620);
-
     support.setAttribute("class", "structure");
 
     supportGroup.appendChild(support);
@@ -1378,10 +1413,19 @@ if(idlerCount < 8){
     let py = y1 + ((y2 - y1) / idlerCount) * i;
 
     let idler =
-      document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "line"
-      );
+document.createElementNS(
+"http://www.w3.org/2000/svg",
+"polyline"
+);
+
+idler.setAttribute(
+"points",
+`
+${px-15},${py+5}
+${px},${py-5}
+${px+15},${py+5}
+`
+);
 
    let dx =
 18 * Math.cos((angle * Math.PI)/180);
@@ -1399,7 +1443,36 @@ idler.setAttribute("y2", py + dy);
     idlerGroup.appendChild(idler);
 
   }
+   // arrow group
+	let arrowGroup =
+document.getElementById("flowArrows");
 
+arrowGroup.innerHTML = "";
+
+for(let i=0; i<8; i++){
+
+let ax =
+x1 + ((xC-x1)/8)*i;
+
+let ay =
+y1 + ((yC-y1)/8)*i;
+
+let txt =
+document.createElementNS(
+"http://www.w3.org/2000/svg",
+"text"
+);
+
+txt.setAttribute("x",ax);
+txt.setAttribute("y",ay-15);
+
+txt.setAttribute("class","arrow");
+
+txt.textContent = "▶";
+
+arrowGroup.appendChild(txt);
+
+}
   // ============================================
   // LENGTH DIMENSION
   // ============================================
