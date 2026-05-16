@@ -447,6 +447,7 @@ Generate Conveyor Layout
 
 
 <svg width="1600" height="700">
+	
 
   <!-- ================= GROUND ================= -->
   <line x1="0" y1="620" x2="1600" y2="620" class="ground"/>
@@ -512,7 +513,7 @@ font-size="15">
   </text>
 
   <!-- ================= BELT ================= -->
- <!-- DYNAMIC STRUCTURE -->
+<!-- DYNAMIC STRUCTURE -->
 <g id="structureGroup"></g>
 
 <!-- DYNAMIC SUPPORTS -->
@@ -527,6 +528,11 @@ font-size="15">
 <!-- RETURN BELT -->
 <polyline id="returnLine" class="returnbelt"/>
 
+<!-- WALKWAY -->
+<polyline id="walkway" class="walkway"/>
+
+<!-- FLOW ARROWS -->
+<g id="flowArrows"></g>
   <!-- ================= LOADING CHUTE ================= -->
  <polygon id="loadingChute"
 points="
@@ -559,12 +565,25 @@ class="label">
   </text>
 
   <!-- ================= TRANSFER TOWER ================= -->
+<g id="towerGroup">
+
 <rect id="transferTower"
 x="1000"
 y="120"
 width="90"
 height="180"
 class="tower"/>
+
+<!-- tower legs -->
+<line x1="1000" y1="300"
+      x2="1020" y2="620"
+      class="structure"/>
+
+<line x1="1090" y1="300"
+      x2="1070" y2="620"
+      class="structure"/>
+
+</g>
  <text id="towerText"
 x="980"
 y="100"
