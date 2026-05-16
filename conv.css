@@ -408,16 +408,34 @@ svg{
 
 /* Conveyor Belt */
 .belt{
-  stroke:#1565c0;
-  stroke-width:8;
+  stroke:url(#beltGradient);
+  stroke-width:10;
   fill:none;
+  filter:url(#shadow);
+
+  stroke-linecap:round;
+  stroke-linejoin:round;
+
+  stroke-dasharray:25 12;
+
+  animation:
+    moveBelt 1.2s linear infinite;
+}
+.belt{
+  filter:
+    drop-shadow(0 0 3px #42a5f5);
 }
 
 /* Return Belt */
 .returnbelt{
-  stroke:#90caf9;
-  stroke-width:5;
+  stroke:#90a4ae;
+  stroke-width:7;
   fill:none;
+
+  stroke-dasharray:20 10;
+
+  animation:
+    returnMove 1.2s linear infinite;
 }
 
 /* Structure */
