@@ -1588,6 +1588,67 @@ function generateConveyor(){
     `Lift = ${H} m`;
 
 }
+/* ========================================= */
+/* BELT MOVEMENT */
+/* ========================================= */
+
+@keyframes moveBelt{
+
+  from{
+    stroke-dashoffset:0;
+  }
+
+  to{
+    stroke-dashoffset:-37;
+  }
+
+}
+
+@keyframes returnMove{
+
+  from{
+    stroke-dashoffset:0;
+  }
+
+  to{
+    stroke-dashoffset:37;
+  }
+
+}
+// ============================================
+// MATERIAL FLOW ANIMATION
+// ============================================
+
+let flowPos = 0;
+
+function animateMaterial(){
+
+  let belt =
+    document.getElementById("beltLine");
+
+  let material =
+    document.getElementById("materialFlow");
+
+  let total =
+    belt.getTotalLength();
+
+  flowPos += 4;
+
+  if(flowPos > total){
+    flowPos = 0;
+  }
+
+  let point =
+    belt.getPointAtLength(flowPos);
+
+  material.setAttribute("cx", point.x);
+  material.setAttribute("cy", point.y - 10);
+
+  requestAnimationFrame(
+    animateMaterial
+  );
+
+}
 
 // ============================================
 // AUTO LOAD
@@ -1629,5 +1690,6 @@ window.loadProject = loadProject;
 window.loadProjectList = loadProjectList;
 window.logout = logout;
 window.generateConveyor = generateConveyor;
+window.animateMaterial = animateMaterial;
 
 
